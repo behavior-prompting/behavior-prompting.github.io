@@ -67,7 +67,7 @@ SPLIT_LABELS: dict[str, str] = {
 }
 
 
-SEEN_PREFIX   = "attention_map/train/"
+SEEN_PREFIX   = "attention_map/test/"
 UNSEEN_PREFIX = "unseen/attention_map/test/"
 VIDEO_TYPES   = {"video-file", "videos/separated"}
 
