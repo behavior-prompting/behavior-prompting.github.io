@@ -1,1 +1,1113 @@
-Website for Behavior Prompting Project
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Behavior Prompting Policy</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* ── tokens ───────────────────────────────────────────────── */
+    :root {
+      --bg:          #FAF8F4;
+      --surface:     #FFFFFF;
+      --border:      #E8E4DC;
+      --text:        #1C1917;
+      --text-muted:  #78716C;
+      --accent:      #3B5CC4;
+      --accent-pale: #EEF1FB;
+      --max-w:       860px;
+      --radius:      10px;
+      --btn-height:  2rem;
+      --title-vid-gap: 0.15rem;
+    }
+
+    /* ── reset ────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+
+    /* ── layout helpers ───────────────────────────────────────── */
+    .container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* ── hero / header ────────────────────────────────────────── */
+    header {
+      padding: 5rem 0 0;
+      text-align: center;
+    }
+
+    header .container {
+      padding-bottom: 3.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h1 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-weight: 400;
+      font-size: clamp(2.2rem, 5.5vw, 3.2rem);
+      line-height: 1.25;
+      color: var(--text);
+      max-width: none;
+      margin: 0 auto;
+    }
+
+    h1 .subtitle {
+      font-size: 0.75em;
+      color: var(--text);
+      display: block;
+      margin-top: 0.2em;
+    }
+
+    /* ── sections ─────────────────────────────────────────────── */
+    section {
+      padding: 4rem 0;
+    }
+
+    section:not(:last-of-type) .container {
+      padding-bottom: 4rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    section:not(:last-of-type) {
+      padding-bottom: 0;
+    }
+
+    h2 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 1.65rem;
+      font-weight: 400;
+      margin-bottom: 1.25rem;
+      position: relative;
+      padding-bottom: 0.6rem;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 2.5rem; height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    p {
+      color: var(--text-muted);
+      max-width: none;
+      text-align: justify;
+    }
+
+.video-header-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 0.6rem;
+      margin: 0.45rem 0 var(--title-vid-gap);
+    }
+
+    .video-header-row .prompt-heading,
+    .video-header-row .speed-tag {
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .speed-tag {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .prompt-heading {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin: 0.5rem 0 0.5rem;
+    }
+
+    .prompt-row video {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: #000;
+      display: block;
+    }
+
+    .trial-caption {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .trial-caption:empty { display: none; }
+
+    .split-label {
+      font-size: 0.9rem;
+
+      color: var(--text-muted);
+      margin: 1.25rem 0 0;
+      max-width: none;
+    }
+
+    /* ── video result viewer ──────────────────────────────────── */
+    .trial-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1rem 0 0.35rem;
+      min-height: 2rem;
+    }
+
+    .trial-btn {
+      display: inline-flex;
+      align-items: center;
+      height: var(--btn-height);
+      white-space: nowrap;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      line-height: 1;
+      padding: 0 0.85rem;
+      border-radius: 5px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: border-color 0.12s, color 0.12s, background 0.12s;
+    }
+
+    .trial-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    .trial-btn.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent);
+      background: var(--accent-pale);
+      color: var(--accent);
+    }
+
+    .trial-btn.success { border-color: #6EAF85; color: #15803D; }
+    .trial-btn.success:hover { border-color: #15803D; background: #F0FDF4; color: #15803D; }
+    .trial-btn.success.active { border-color: #15803D; box-shadow: 0 0 0 1px #15803D; background: #F0FDF4; color: #15803D; }
+
+    .trial-btn.failure { border-color: #F0B8B8; color: #B91C1C; }
+    .trial-btn.failure:hover { border-color: #B91C1C; background: #FEF2F2; color: #B91C1C; }
+    .trial-btn.failure.active { border-color: #B91C1C; box-shadow: 0 0 0 1px #B91C1C; background: #FEF2F2; color: #B91C1C; }
+
+    .autoplay-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      margin: 0 0 1rem;
+      user-select: none;
+    }
+
+    .autoplay-label input[type="checkbox"] {
+      cursor: pointer;
+      accent-color: var(--accent);
+    }
+
+    .trial-key {
+      display: flex;
+      gap: 1rem;
+      margin-top: 0.25rem;
+      margin-bottom: 1.25rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      align-items: center;
+    }
+
+    .trial-key-swatch {
+      width: 0.65rem;
+      height: 0.65rem;
+      border-radius: 2px;
+      display: inline-block;
+      margin-right: 0.3rem;
+    }
+
+    .trial-key-swatch.success { background: #15803D; }
+    .trial-key-swatch.failure { background: #B91C1C; }
+
+    /* LIBERO split type button styles */
+    .trial-btn.split-train  { border-color: #93A8D4; color: #3B5CC4; }
+    .trial-btn.split-train:hover  { border-color: #3B5CC4; background: var(--accent-pale); color: #3B5CC4; }
+    .trial-btn.split-train.active { border-color: #3B5CC4; box-shadow: 0 0 0 1px #3B5CC4; background: var(--accent-pale); color: #3B5CC4; }
+
+    .trial-btn.split-unseen  { border-color: #FDBA74; color: #EA6C1A; }
+    .trial-btn.split-unseen:hover  { border-color: #EA6C1A; background: #FFF7ED; color: #EA6C1A; }
+    .trial-btn.split-unseen.active { border-color: #EA6C1A; box-shadow: 0 0 0 1px #EA6C1A; background: #FFF7ED; color: #EA6C1A; }
+
+    .trial-btn.split-excluded {
+      border-color: var(--border);
+      color: var(--text-muted);
+      opacity: 0.45;
+      text-decoration: line-through;
+      cursor: not-allowed;
+    }
+
+    .trial-key-swatch.split-train-swatch   { background: #3B5CC4; }
+    .trial-key-swatch.split-unseen-swatch  { background: #EA6C1A; }
+    .trial-key-swatch.split-excluded-swatch { background: var(--text-muted); text-decoration: line-through; opacity: 0.45; }
+
+    .model-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      column-gap: 1rem;
+      row-gap: 0;
+      align-items: start;
+    }
+
+    .model-col {
+      display: grid;
+      grid-row: span 2;
+      grid-template-rows: subgrid;
+      row-gap: var(--title-vid-gap);
+    }
+
+    .model-col h4 {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-align: center;
+      align-self: start;
+    }
+
+.model-col video {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: #000;
+      display: block;
+    }
+
+    .attention-row {
+      margin-top: 1.5rem;
+    }
+
+    .libero-viewer .attention-row {
+      margin-top: 0;
+    }
+
+    .attention-row h4 {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: var(--title-vid-gap);
+    }
+
+    .attention-row video {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: #000;
+      display: block;
+    }
+
+
+    /* placeholder figure */
+    .figure-placeholder {
+      width: 100%;
+      height: 280px;
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      margin-top: 1.5rem;
+    }
+
+    /* ── libero subsections ──────────────────────────────────── */
+    .subsection {
+      margin-top: 3rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .subsection h3 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 1.2rem;
+      font-weight: 400;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-heading-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1.0rem;
+      margin-bottom: 0.50rem;
+      line-height: 1;
+    }
+    .section-heading-row h3 { margin-bottom: 0; }
+    .section-heading-row .trial-key { margin: 0; flex-shrink: 0; }
+    .section-heading-row .autoplay-label { margin: 0; flex-shrink: 0; }
+
+    /* ── libero viewer ───────────────────────────────────────── */
+    .task-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 0.25rem 0 1.25rem;
+    }
+
+    .task-row label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .task-select {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      padding: 0.38rem 2rem 0.38rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      flex: 1;
+      width: 100%;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2378716C' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.65rem center;
+    }
+
+    .task-select:focus { outline: none; border-color: var(--accent); }
+
+    .task-row { min-height: 2.2rem; }
+
+    .split-description { min-height: 1.5rem; }
+
+    /* ── viewer cards ─────────────────────────────────────────── */
+    .single-viewer,
+    .libero-viewer,
+    .sim-viewer {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      background: #F0EDE8;
+      margin-top: 1.25rem;
+    }
+
+    .single-viewer .section-heading-row:first-child,
+    .libero-viewer .section-heading-row:first-child,
+    .sim-viewer .section-heading-row:first-child {
+      margin-top: 0;
+    }
+
+    /* ── single video viewer (drawanything-real) ──────────────── */
+    .single-viewer video {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: #000;
+      display: block;
+    }
+
+    .laundry-viewer video:not(.prompt-video) {
+      aspect-ratio: 2 / 1;
+    }
+
+    .laundry-videos-row {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .drawreal-videos-row {
+      display: flex;
+      flex-direction: column;
+    }
+
+    @media (min-width: 1100px) {
+      .drawreal-viewer,
+      .laundry-main-viewer {
+        width: calc(100vw - 3rem);
+        max-width: calc(var(--max-w) * 1.5);
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .drawreal-viewer .drawreal-videos-row {
+        flex-direction: row-reverse;
+        align-items: flex-start;
+        gap: 1.5rem;
+      }
+
+      /* both 16:9 → equal widths give equal heights */
+      .drawreal-viewer .drawreal-rollout-col,
+      .drawreal-viewer .prompt-row { flex: 1; min-width: 0; }
+
+      .laundry-main-viewer .laundry-videos-row {
+        flex-direction: row-reverse;
+        align-items: flex-start;
+        gap: 1.5rem;
+      }
+
+      /* flex 9:8 gives equal height: rollout (2:1) vs prompt (16:9) */
+      .laundry-main-viewer .laundry-rollout-col { flex: 9; min-width: 0; }
+      .laundry-main-viewer .prompt-row          { flex: 8; min-width: 0; }
+    }
+
+    /* ── footer ───────────────────────────────────────────────── */
+    footer {
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── HEADER ──────────────────────────────────────────────── -->
+  <header>
+    <div class="container">
+      <h1>Behavior Prompting Policy<br /><span class="subtitle">Demonstrations as Prompts for Manipulation</span></h1>
+    </div>
+  </header>
+
+  <!-- ── LAUNDRY FOLDING ────────────────────────────────────── -->
+  <section>
+    <div class="container">
+      <h2>Laundry Folding</h2>
+      <p>A human commands the robot at test time through a single sweater folding demonstration (i.e., behavior prompt) collected with bimanual iPhUMI. The robot is trained on three distinct folding tasks, and BPP determines which of the training behaviors to follow based on the prompt. The purpose of this experiment is to validate that we can command a robot via demonstration to complete complex manipulation tasks.</p>
+
+      <div class="single-viewer laundry-viewer laundry-main-viewer" data-base="media/results/laundry_folding/bpp" data-default-autoplay="true" data-prompt-pause="true" data-hide-controls="true">
+        <p style="font-size:0.8rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:1rem 0 -0.5rem; max-width:none;">Training tasks:</p>
+        <div class="trial-btns"></div>
+        <div class="laundry-videos-row">
+          <div class="laundry-rollout-col">
+            <div class="video-header-row">
+              <h4 class="prompt-heading" style="margin:0">BPP Rollout</h4>
+              <span class="speed-tag">2× speed</span>
+              <span class="trial-caption"></span>
+            </div>
+            <video controls loop muted autoplay playsinline></video>
+          </div>
+          <div class="prompt-row" style="display:none">
+            <div class="video-header-row">
+              <h4 class="prompt-heading" style="margin:0">Behavior Prompt</h4>
+            </div>
+            <video class="prompt-video" controls loop muted autoplay playsinline></video>
+          </div>
+        </div>
+      </div>
+
+      <!-- Failure cases -->
+      <div class="subsection">
+        <h3>Behavior prompting challenges with low task diversity</h3>
+        <p>
+          Behavior prompts are most useful when the spatial and temporal information in the prompt provide additional task-relevent cues to the policy. But in this experiment we only have three training tasks, all of which can be directly memorized and distinguished in the base model. Consequently, this extra information makes the behavior prompt a more indirect identifier of the desired folding task compared to a language command. We observe that this indirectness weakens the strength of the behavior prompt conditioning in low task diversity scenarios. Below, we highlight cases below where BPP completes the wrong task or hesitates about what task to complete. We don't see these failure modes with language conditioning.</p>
+        <div class="single-viewer laundry-viewer" data-base="media/results/laundry_folding/failures" data-default-autoplay="true" data-hide-controls="true">
+          <p style="font-size:0.8rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:1rem 0 -0.5rem; max-width:none;">Failure cases:</p>
+          <div class="trial-btns"></div>
+          <p class="trial-caption"></p>
+          <div class="video-header-row">
+            <h4 class="prompt-heading" style="margin:0">BPP Rollout</h4>
+            <span class="speed-tag">2× speed</span>
+          </div>
+          <video controls loop muted autoplay playsinline></video>
+        </div>
+        <p style="margin-top: 1rem;">We anticipate that behavior prompting would have substantial advantages over language conditioning if we trained on many folding strategies across many garmet types and then evaluated test-time adaptation to a new folding style or unseen garmet. In this case, a behavior prompt provides useful temporal cues about the folding steps and useful visual cues about interaction points on the new garmet. It's also more natural to describe these folding steps and spatial interaction points through a demonstration than with language.
+      </div>
+    </div>
+  </section>
+
+  <!-- ── DRAWANYTHING-REAL ───────────────────────────────────── -->
+  <!-- ── DRAWANYTHING ──────────────────────────────────────── -->
+  <section>
+    <div class="container">
+      <h2>DrawAnything</h2>
+      <p>We evaluate behavior prompting on a free-form drawing task where the robot must replicate a novel drawing given a single human demonstration. Drawing is well suited for studying behavior prompting as it requires the policy to continuously reference the prompt to adapt its low-level actions. Note that the prompt and rollout occur at different board orientations, meaning that BPP can't replicate the drawing by directly replay actions from the prompt. Results are shown on drawings <strong><em>not seen during training</em></strong>.</p>
+
+      <!-- Real -->
+      <div class="subsection">
+        <h3>DrawAnything Real</h3>
+        <p>At test time, BPP is provided with a single human drawing demo collected using iPhUMI. The robot then replicates the drawing at a different drawing region pose.</p>
+
+        <div class="single-viewer drawreal-viewer" data-base="media/results/drawanything_real/unseen_rollout/bpp" data-default-autoplay="true" data-prompt-pause="true">
+          <p style="font-size:0.8rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:1rem 0 -0.5rem; max-width:none;">Tasks not seen during training:</p>
+          <div class="trial-btns"></div>
+          <p class="trial-caption"></p>
+          <div class="drawreal-videos-row">
+            <div class="drawreal-rollout-col">
+              <div class="video-header-row">
+                <h4 class="prompt-heading" style="margin:0">BPP Rollout</h4>
+                <span class="speed-tag">3× speed</span>
+              </div>
+              <video controls loop muted autoplay playsinline></video>
+            </div>
+            <div class="prompt-row" style="display:none">
+              <div class="video-header-row">
+                <h4 class="prompt-heading" style="margin:0">Behavior Prompt</h4>
+                <span class="speed-tag">3× speed</span>
+              </div>
+              <video class="prompt-video" controls loop muted autoplay playsinline></video>
+            </div>
+          </div>
+        </div>
+
+        <div class="single-viewer attention-card">
+          <div class="trial-btns">
+            <button class="trial-btn active" data-src="media/results/drawanything_real/unseen_rollout/attention/star_attention.mp4">star</button>
+            <button class="trial-btn" data-src="media/results/drawanything_real/unseen_rollout/attention/8_recovery_attention.mp4">8 (human disturbance)</button>
+          </div>
+          <div class="attention-row" style="margin-top:0">
+            <div class="video-header-row">
+              <h4 class="prompt-heading" style="margin:0">BPP Attention Map</h4>
+              <span class="speed-tag">3× speed</span>
+            </div>
+            <video src="media/results/drawanything_real/unseen_rollout/attention/star_attention.mp4"
+                   controls loop muted autoplay playsinline style="aspect-ratio:auto; height:auto;"></video>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sim -->
+      <div class="subsection">
+        <h3>DrawAnything Sim</h3>
+        <p>The behavior prompt is a single human demonstration of a previously unseen drawing collected using a mouse. ICRT also has the behavior prompt in its model context, while the goal image policy only has access to the final image of the demonstration. The attention map visualization shows the rollout for BPP (top) and the behavior prompt with attention scores overlaid (bottom). The red drawing is the ground truth displayed for reference; it is not visible to the policy.</p>
+
+        <div class="sim-viewer">
+          <p style="font-size:0.8rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:1rem 0 -0.5rem; max-width:none;">Tasks not seen during training:</p>
+          <div class="trial-btns"
+               data-task="drawanything_sim"
+               data-split="unseen_rollout"
+               data-default-trial="f7">
+          </div>
+
+          <div class="model-grid">
+            <div class="model-col">
+              <h4>Goal Image</h4>
+              <video id="vid-drawanything_sim-goal_image" controls loop muted autoplay playsinline></video>
+            </div>
+            <div class="model-col">
+              <h4>ICRT</h4>
+              <video id="vid-drawanything_sim-icrt" controls loop muted autoplay playsinline></video>
+            </div>
+            <div class="model-col">
+              <h4>BPP (Ours)</h4>
+              <video id="vid-drawanything_sim-bpp" controls loop muted autoplay playsinline></video>
+            </div>
+          </div>
+
+          <div class="attention-row">
+            <h4>BPP Attention Map</h4>
+            <video id="vid-drawanything_sim-bpp_attention" controls loop muted autoplay playsinline></video>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── LIBERO-GEN ─────────────────────────────────────────── -->
+  <section>
+    <div class="container">
+      <h2>LIBERO-Gen</h2>
+      <p>The purpose of the LIBERO-Gen benchmarks is to evaluate test-time adaptation to new tasks. By new tasks we do not mean entirely new action primitives. Instead, we define new tasks as unseen compositions of existing mainpulation primitives. We structure our LIBERO-Gen experiments to evaluate if models can follow new instructions to complete these unseen compositions.</p>
+
+      <!-- Combination -->
+      <div class="subsection">
+        <h3>LIBERO-Gen Combination</h3>
+        <p>In this benchmark we have one environment containing two identical bowls that are placed at varying initial locations in the scene. The policy is instructed to pick one of the two bowls and then place that bowl in an instructed target location. We train on many pick-place location combinations and evaluate on unseen pick-place combinations at test-time.</p>
+        <div class="libero-viewer" data-experiment="libero_combination" data-default-split="libero_spatial_selected_combinations_view">
+          <p style="font-size:0.8rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:1rem 0 -0.5rem; max-width:none;">Dataset split:</p>
+          <div class="trial-btns"></div>
+          <p class="split-label split-description"></p>
+          <div class="task-row">
+            <label>Task</label>
+            <select class="task-select"></select>
+          </div>
+          <div class="attention-row">
+            <h4>BPP Attention Map <span class="speed-tag">(not all rollouts are successful)</span></h4>
+            <video controls loop muted autoplay playsinline></video>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chain -->
+      <div class="subsection">
+        <h3>LIBERO-Gen Chain</h3>
+        <p>In this benchmark we have one environment and explore the set of possible two-step interactions. First step actions include opening top/middle drawer, pushing the plate, turning on the stove, and pick-place actions. Second step actions include pick-place actions. We evaluate a model's instruction-following ability to complete sequential execution of two individually seen manipulation primitives never seen jointly during training.</p>
+        <div class="libero-viewer" data-experiment="libero_chain" data-default-split="libero_goal_chain_selected_view">
+          <p style="font-size:0.8rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:1rem 0 -0.5rem; max-width:none;">Dataset split:</p>
+          <div class="trial-btns"></div>
+          <p class="split-label split-description"></p>
+          <div class="task-row">
+            <label>Task</label>
+            <select class="task-select"></select>
+          </div>
+          <div class="attention-row">
+            <h4>BPP Attention Map <span class="speed-tag">(not all rollouts are successful)</span></h4>
+            <video controls loop muted autoplay playsinline></video>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chain (No Second Step) -->
+      <div class="subsection">
+        <h3>LIBERO-Gen Chain (No Second Step)</h3>
+        <p>We perform an ablation on the training data composition by removing the second-step tasks from the training dataset. This means that when we evaluate on unseen chained tasks, the second step in that chain has not been seen during training. For example, if the unseen chained task is "push the plate to the front of the stove and then put the bowl on the plate," then the policy will have never seen how to place the bowl on the plate after the plate has already moved to the location after the push. This increases the difficulty of completing the unseen tasks as it requires the model to 1) understand new two-step instructions and 2) complete a known manipulation primitive in an unseen environment state.</p>
+        <div class="libero-viewer" data-experiment="libero_chain_no_second_step" data-default-split="libero_goal_chain_selected_view">
+          <p style="font-size:0.8rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:1rem 0 -0.5rem; max-width:none;">Dataset split:</p>
+          <div class="trial-btns"></div>
+          <p class="split-label split-description"></p>
+          <div class="task-row">
+            <label>Task</label>
+            <select class="task-select"></select>
+          </div>
+          <div class="attention-row">
+            <h4>BPP Attention Map <span class="speed-tag">(not all rollouts are successful)</span></h4>
+            <video controls loop muted autoplay playsinline></video>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <script>
+    // Splits excluded from training for a specific experiment (shown crossed-out)
+    const SPLIT_EXCLUDED = {
+      "libero_chain_no_second_step": new Set(["libero_goal_chain_secondstep_view"]),
+    };
+
+    const SPLIT_TYPES = {
+      "libero_spatial_selected_combinations_inverse_view": "train",
+      "libero_spatial_selected_combinations_view":         "unseen",
+      "libero_goal_chain_firststep_view":                  "train",
+      "libero_goal_chain_secondstep_view":                 "train",
+      "libero_goal_chain_selected_inverse_view":           "train",
+      "libero_goal_chain_selected_view":                   "unseen",
+    };
+
+    const SPLIT_DESCRIPTIONS = {
+      "libero_spatial_selected_combinations_inverse_view": "Training pick-place combinations",
+      "libero_spatial_selected_combinations_view":         "Unseen pick-place combinations — pick and place locations seen individually during training but <strong><em>never jointly</em></strong>.",
+      "libero_goal_chain_firststep_view":                  "Training first-step tasks — single manipulation primitives including open drawer, push plate, turn on stove, and pick-place.",
+      "libero_goal_chain_secondstep_view":                 "Training second-step tasks — pick-place actions where the preceding first step has already been completed.",
+      "libero_goal_chain_selected_inverse_view":           "Training chained tasks — two-step sequences seen during training used to build up chaining capability.",
+      "libero_goal_chain_selected_view":                   "Unseen chained tasks — two-step sequences composed of individually seen manipulation skills, <strong><em>never seen chained together</em></strong> during training.",
+    };
+
+    const MODELS = [
+      { id: 'bpp',        label: 'BPP' },
+      { id: 'icrt',       label: 'ICRT' },
+      { id: 'goal_image', label: 'Goal Image' },
+    ];
+
+    function loadTrial(task, split, trial) {
+      const encoded = encodeURIComponent(trial);
+      MODELS.forEach(({ id }) => {
+        const vid = document.getElementById(`vid-${task}-${id}`);
+        if (vid) setVideoSrc(vid, `media/results/${task}/${split}/${id}/${encoded}.mp4`);
+      });
+      const attnVid = document.getElementById(`vid-${task}-bpp_attention`);
+      if (attnVid) setVideoSrc(attnVid, `media/results/${task}/${split}/bpp_attention/${encoded}.mp4`);
+    }
+
+    function createAutoplayLabel() {
+      const label = document.createElement('label');
+      label.className = 'autoplay-label';
+      label.innerHTML = '<input type="checkbox"> <span>Enable Autoplay</span>';
+      return label;
+    }
+
+    function createOutcomeLegend() {
+      const key = document.createElement('div');
+      key.className = 'trial-key';
+      key.innerHTML =
+        '<span><span class="trial-key-swatch success"></span>BPP Success</span>' +
+        '<span><span class="trial-key-swatch failure"></span>BPP Failure</span>';
+      return key;
+    }
+
+    function getOrCreateHeadingRow(ref) {
+      const prev = ref.previousElementSibling;
+      if (prev?.classList.contains('section-heading-row')) return prev;
+      const anchor = prev ?? ref.closest('.subsection')?.querySelector('h3');
+      if (!anchor) return null;
+      const row = document.createElement('div');
+      row.className = 'section-heading-row';
+      anchor.parentNode.insertBefore(row, anchor);
+      row.appendChild(anchor);
+      anchor.style.margin = '0';
+      anchor.style.lineHeight = '1';
+      return row;
+    }
+
+    function initTrialButtons(btnRow, trials) {
+      const task  = btnRow.dataset.task;
+      const split = btnRow.dataset.split;
+
+      // trials is [{label, file}, ...]; label is the display name, file is the filename on disk
+      const defaultFile  = btnRow.dataset.defaultTrial;
+      const defaultEntry = (defaultFile && trials.find(t => t.file === defaultFile)) ?? trials[0];
+
+      const hasOutcomes = trials.some(t => t.success !== undefined);
+      if (hasOutcomes) {
+        const key = createOutcomeLegend();
+        const row = getOrCreateHeadingRow(btnRow);
+        if (row) row.appendChild(key);
+        else btnRow.insertAdjacentElement('afterend', key);
+      }
+
+      trials.forEach(trial => {
+        const btn = document.createElement('button');
+        btn.className = 'trial-btn'
+          + (trial.file === defaultEntry.file ? ' active' : '')
+          + (trial.success === false ? ' failure' : trial.success === true ? ' success' : '');
+        btn.textContent = trial.label;
+        btn.addEventListener('click', () => {
+          btnRow.querySelectorAll('.trial-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          loadTrial(task, split, trial.file);
+        });
+        btnRow.appendChild(btn);
+      });
+
+      loadTrial(task, split, defaultEntry.file);
+
+      const modelVids = MODELS.map(({ id }) => document.getElementById(`vid-${task}-${id}`)).filter(Boolean);
+      const attnVid   = document.getElementById(`vid-${task}-bpp_attention`);
+      const allVids   = attnVid ? [...modelVids, attnVid] : modelVids;
+      if (allVids.length) setupSyncedVideos(btnRow, allVids);
+    }
+
+    // ── LIBERO viewers ──────────────────────────────────────────
+    document.querySelectorAll('.libero-viewer').forEach(viewer => {
+      const experiment = viewer.dataset.experiment;
+      const video      = viewer.querySelector('video');
+      const splitBtns  = viewer.querySelector('.trial-btns');
+      const taskSelect = viewer.querySelector('.task-select');
+
+      function loadLiberoVideo(splitKey, taskFile) {
+        setVideoSrc(video, `media/results/${experiment}/bpp_attention/${splitKey}/${encodeURIComponent(taskFile)}.mp4`);
+      }
+
+      const descEl = viewer.querySelector('.split-description');
+
+      function activateSplit(split, allSplits) {
+        splitBtns.querySelectorAll('.trial-btn').forEach(b => b.classList.remove('active'));
+        splitBtns.querySelector(`[data-split-key="${split.key}"]`)?.classList.add('active');
+        if (descEl) descEl.innerHTML = split.description || SPLIT_DESCRIPTIONS[split.key] || '';
+        taskSelect.innerHTML = '';
+        split.tasks.forEach(task => {
+          const opt = document.createElement('option');
+          opt.value       = task.file;
+          opt.textContent = task.label;
+          taskSelect.appendChild(opt);
+        });
+        if (split.tasks.length) loadLiberoVideo(split.key, split.tasks[0].file);
+      }
+
+      fetch(`media/results/${experiment}/manifest.json`)
+        .then(r => r.json())
+        .then(({ splits }) => {
+          const excluded = SPLIT_EXCLUDED[experiment] || new Set();
+
+          // For chain_no_second_step, insert the crossed-out Second Step button at the right position
+          const allSplits = [...splits];
+          if (excluded.has('libero_goal_chain_secondstep_view') &&
+              !allSplits.find(s => s.key === 'libero_goal_chain_secondstep_view')) {
+            allSplits.splice(1, 0, {
+              key: 'libero_goal_chain_secondstep_view',
+              label: 'Second Step',
+              tasks: [],
+              excluded: true,
+            });
+          }
+
+          allSplits.forEach((split, i) => {
+            const btn = document.createElement('button');
+            const splitType = SPLIT_TYPES[split.key] || 'train';
+            if (split.excluded) {
+              btn.className        = 'trial-btn split-excluded';
+              btn.textContent      = split.label;
+              btn.disabled         = true;
+              btn.title            = 'Not included in training for this experiment';
+            } else {
+              btn.className        = `trial-btn split-${splitType}` + (i === 0 ? ' active' : '');
+              btn.dataset.splitKey = split.key;
+              btn.textContent      = `${split.label} (${split.tasks.length} task${split.tasks.length === 1 ? '' : 's'})`;
+              btn.addEventListener('click', () => {
+                if (btn.classList.contains('active')) return;
+                activateSplit(split, splits);
+              });
+            }
+            splitBtns.appendChild(btn);
+          });
+
+          const liberoRow = getOrCreateHeadingRow(splitBtns);
+
+          // Legend first
+          const splitLegend = document.createElement('div');
+          splitLegend.className = 'trial-key';
+          splitLegend.innerHTML =
+            '<span><span class="trial-key-swatch split-train-swatch"></span>Train</span>' +
+            '<span><span class="trial-key-swatch split-unseen-swatch"></span>Unseen</span>' +
+            (excluded.size ? '<span><span class="trial-key-swatch split-excluded-swatch"></span>Not trained</span>' : '');
+          if (liberoRow) liberoRow.appendChild(splitLegend);
+          else splitBtns.insertAdjacentElement('afterend', splitLegend);
+
+          // Autoplay after legend
+          const autoLabel = createAutoplayLabel();
+          if (liberoRow) liberoRow.appendChild(autoLabel);
+          else taskSelect.closest('.task-row').insertAdjacentElement('afterend', autoLabel);
+
+          taskSelect.addEventListener('change', () => {
+            const activeKey = splitBtns.querySelector('.trial-btn.active')?.dataset.splitKey;
+            if (activeKey) loadLiberoVideo(activeKey, taskSelect.value);
+          });
+
+          const defaultKey = viewer.dataset.defaultSplit;
+          const initial = (defaultKey && splits.find(s => s.key === defaultKey)) ?? splits[0];
+          if (initial) activateSplit(initial, splits);
+          const autoCheck = autoLabel.querySelector('input');
+
+          function advanceTask() {
+            const next = (taskSelect.selectedIndex + 1) % taskSelect.options.length;
+            taskSelect.selectedIndex = next;
+            taskSelect.dispatchEvent(new Event('change'));
+          }
+
+          autoCheck.addEventListener('change', () => {
+            if (autoCheck.checked) {
+              video.loop = false;
+              video.addEventListener('ended', advanceTask);
+            } else {
+              video.loop = true;
+              video.removeEventListener('ended', advanceTask);
+            }
+          });
+
+        })
+        .catch(() => console.warn(`No manifest.json found for ${experiment}`));
+    });
+
+    function setupSyncedVideos(btnRow, videos) {
+      if (!Array.isArray(videos)) videos = [videos];
+
+      // Always non-looping — restart all in sync, or advance if autoplay is on
+      videos.forEach(v => v.loop = false);
+
+      let autoplayOn = false;
+      let ended = new Set();
+
+      function onEnded(e) {
+        ended.add(e.target);
+        const active = videos.filter(v => v.src);
+        if (ended.size >= active.length) {
+          ended.clear();
+          if (autoplayOn) {
+            const btns = [...btnRow.querySelectorAll('.trial-btn')];
+            const idx = btns.findIndex(b => b.classList.contains('active'));
+            btns[(idx + 1) % btns.length].click();
+          } else {
+            active.forEach(v => v.play());
+          }
+        }
+      }
+
+      videos.forEach(v => v.addEventListener('ended', onEnded));
+
+      const label = createAutoplayLabel();
+      const syncRow = getOrCreateHeadingRow(btnRow);
+      if (syncRow) syncRow.appendChild(label);
+      else btnRow.insertAdjacentElement('afterend', label);
+
+      const checkbox = label.querySelector('input');
+      checkbox.addEventListener('change', () => { autoplayOn = checkbox.checked; });
+    }
+
+    function setVideoSrc(vid, src) {
+      // Freeze on the current frame while the new video loads
+      try {
+        const c = document.createElement('canvas');
+        c.width = vid.videoWidth; c.height = vid.videoHeight;
+        c.getContext('2d').drawImage(vid, 0, 0);
+        vid.poster = c.toDataURL();
+      } catch(e) {}
+      vid.src = src;
+      vid.load();
+      vid.addEventListener('loadeddata', () => { vid.poster = ''; }, { once: true });
+    }
+
+    // ── Video controls ────────────────────────────────────────────
+    const simSection = document.querySelector('[data-task="drawanything_sim"]')?.closest('section');
+    document.querySelectorAll('video').forEach(v => {
+      v.removeAttribute('controls');
+      const noControls = simSection?.contains(v) || v.closest('[data-hide-controls]');
+      if (!noControls) {
+        v.addEventListener('mouseenter', () => v.controls = true);
+        v.addEventListener('mouseleave', () => v.controls = false);
+      }
+    });
+
+    // ── Single video viewers (e.g. DrawAnything-Real) ────────────
+    document.querySelectorAll('.single-viewer').forEach(viewer => {
+      const base       = viewer.dataset.base;
+      if (!base) return;
+      const promptBase = base.replace(/\/bpp$/, '/prompt');
+      const video      = viewer.querySelector('video:not(.prompt-video)');
+      const btns       = viewer.querySelector('.trial-btns');
+      const captionEl  = viewer.querySelector('.trial-caption');
+      const promptRow  = viewer.querySelector('.prompt-row');
+      const promptVid  = viewer.querySelector('.prompt-video');
+
+      function updatePrompt(trial) {
+        if (trial.prompt && promptRow && promptVid) {
+          promptRow.style.display = '';
+          setVideoSrc(promptVid, `${promptBase}/${encodeURIComponent(trial.prompt)}.mp4`);
+        } else if (promptRow) {
+          promptRow.style.display = 'none';
+        }
+      }
+
+      fetch(`${base}/trials.json`)
+        .then(r => r.json())
+        .then(trials => {
+          const defaultEntry = trials[0];
+
+          const headingRow = getOrCreateHeadingRow(btns);
+
+          // Legend first
+          const hasOutcomes = trials.some(t => t.success !== undefined);
+          if (hasOutcomes) {
+            const key = createOutcomeLegend();
+            if (headingRow) headingRow.appendChild(key);
+            else btns.insertAdjacentElement('afterend', key);
+          }
+
+          // Autoplay after legend
+          const autoLabelSingle = createAutoplayLabel();
+          if (headingRow) headingRow.appendChild(autoLabelSingle);
+          else btns.insertAdjacentElement('afterend', autoLabelSingle);
+
+          trials.forEach(trial => {
+            const btn = document.createElement('button');
+            btn.className = 'trial-btn'
+              + (trial.file === defaultEntry.file ? ' active' : '')
+              + (trial.success === false ? ' failure' : trial.success === true ? ' success' : '');
+            btn.textContent = trial.label;
+            btn.addEventListener('click', () => {
+              btns.querySelectorAll('.trial-btn').forEach(b => b.classList.remove('active'));
+              btn.classList.add('active');
+              setVideoSrc(video, `${base}/${encodeURIComponent(trial.file)}.mp4`);
+              if (captionEl) captionEl.textContent = trial.caption ?? '';
+              updatePrompt(trial);
+            });
+            btns.appendChild(btn);
+          });
+          video.src = `${base}/${encodeURIComponent(defaultEntry.file)}.mp4`;
+          if (captionEl) captionEl.textContent = defaultEntry.caption ?? '';
+          updatePrompt(defaultEntry);
+          const autoCheckSingle = autoLabelSingle.querySelector('input');
+          function advanceSingle() {
+            const bs = [...btns.querySelectorAll('.trial-btn')];
+            bs[(bs.findIndex(b => b.classList.contains('active')) + 1) % bs.length].click();
+          }
+          function promptPauseOnEnd() {
+            promptVid.currentTime = Math.max(0, promptVid.duration - 0.001);
+          }
+          autoCheckSingle.addEventListener('change', () => {
+            if (autoCheckSingle.checked) {
+              video.loop = false;
+              video.addEventListener('ended', advanceSingle);
+              if (promptVid && viewer.dataset.promptPause === 'true') {
+                promptVid.loop = false;
+                promptVid.addEventListener('ended', promptPauseOnEnd);
+              }
+            } else {
+              video.loop = true;
+              video.removeEventListener('ended', advanceSingle);
+              if (promptVid) {
+                promptVid.loop = true;
+                promptVid.removeEventListener('ended', promptPauseOnEnd);
+                if (promptVid.paused) promptVid.play();
+              }
+            }
+          });
+          if (viewer.dataset.defaultAutoplay === 'true') {
+            autoCheckSingle.checked = true;
+            autoCheckSingle.dispatchEvent(new Event('change'));
+          }
+        })
+        .catch(() => console.warn(`No trials.json found at ${base}`));
+    });
+
+    // ── Attention cards (static button list with data-src) ───────
+    document.querySelectorAll('.attention-card').forEach(card => {
+      const btns  = card.querySelectorAll('.trial-btn[data-src]');
+      const video = card.querySelector('video');
+      btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          btns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          video.src = btn.dataset.src;
+          video.play();
+        });
+      });
+    });
+
+    // ── Draw Anything viewers ────────────────────────────────────
+    document.querySelectorAll('.trial-btns[data-task]').forEach(btnRow => {
+      const { task, split } = btnRow.dataset;
+
+      fetch(`media/results/${task}/${split}/trials.json`)
+        .then(r => r.json())
+        .then(trials => {
+          initTrialButtons(btnRow, trials);
+        })
+        .catch(() => console.warn(`No trials.json found for ${task}/${split}`));
+    });
+  </script>
+
+</body>
+</html>
