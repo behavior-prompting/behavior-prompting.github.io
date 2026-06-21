@@ -779,7 +779,7 @@
     <div class="container">
       <div style="display:flex; justify-content:center; margin-bottom:1rem;">
         <div style="background:var(--surface-tint); border:1px solid var(--border); border-radius:var(--radius); padding:0.75rem 1.25rem; text-align:left;">
-          <strong style="color:var(--text);">TL;DR:</strong> <span style="color:var(--text);">Reuse your existing robot demonstrations as in-context prompts during training. Then you can prompt the in-context policy at test time with a single demo to complete known or even new tasks.</span>
+          <strong style="color:var(--text);">TL;DR:</strong> <span style="color:var(--text);">Reuse your existing robot demonstrations as in-context prompts during training. Then you can prompt the in-context policy with a single demo at test time to complete known or even new tasks.</span>
         </div>
       </div>
       <div class="teaser-viewer" style="display:flex; flex-direction:column; gap:6px;">
@@ -955,36 +955,15 @@
       <p><em>Yes, we find that BPP can follow previously unseen instructions consisting of known manipulation primitives. Though we do not yet have evidence that BPP can adapt to entirely new action primitives.</em></p>
       <br>
 
-      <p>We create LIBERO-Gen, an extension to LIBERO that procedurally generates new environments, tasks, and demonstration data. Using this tool, we create two benchmarks, LIBERO-Gen Combination and LIBERO-Gen Chain, to evaluate test-time adaptation to new tasks. By new tasks we mean unseen compositions of known manipulation primitives, rather than entirely new action primitives. <b>In other words, these benchmarks evaluate compositional instruction following.</b></p>
+      <p>We create LIBERO-Gen, an extension to LIBERO that procedurally generates new environments, tasks, and demonstration data. Using this tool, we create two benchmarks, LIBERO-Gen Chain and LIBERO-Gen Combination, to evaluate test-time adaptation to new tasks. By new tasks we mean unseen compositions of known manipulation primitives, rather than entirely new action primitives. <b>In other words, these benchmarks evaluate compositional instruction following.</b></p>
 
       <br>
       <p>
         <b>We find that BPP improves adaptation in both manipulation benchmarks compared to language conditioning or goal-image conditioning. We also achieve adaptation performance rivaling models with foundation level pretraining despite not having pretraining.</b> Expand the following sections for details.
       <p>
 
-      <!-- Combination -->
-      <details class="subsection">
-        <summary><h3>LIBERO-Gen Combination</h3></summary>
-        <p>In this benchmark we have one environment containing two identical bowls that are placed at varying initial locations in the scene. The policy is instructed to pick one of the two bowls and then place that bowl in an instructed target location. We train on many pick-place location combinations and evaluate on withheld pick-place combinations at test-time.</p>
-        <div class="libero-viewer" data-experiment="libero_combination" data-default-split="libero_spatial_selected_combinations_view">
-          <p style="font-size:0.8rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:1rem 0 -0.5rem; max-width:none;">Dataset split:</p>
-          <div class="trial-btns"></div>
-          <p class="split-label split-description"></p>
-          <div class="task-row">
-            <label>Task</label>
-            <select class="task-select"></select>
-          </div>
-          <div class="attention-row">
-            <h4>BPP Attention Map <span class="speed-tag">(not all rollouts are successful)</span></h4>
-            <video controls loop muted autoplay playsinline></video>
-          </div>
-        </div>
-        <img src="media/figures/liberogen_combination_results.svg" alt="LIBERO-Gen Combination results" style="width:100%; max-width:400px; margin-top:1.5rem; display:block; margin-left:auto; margin-right:auto;">
-        <p class="fig-caption"><b>LIBERO-Gen Combination results.</b> We find that BPP outperforms baselines using goal images or language instructions. Finetuning the π<sub>0.5</sub> VLA model on the training combinations outperform BPP on adaptation to unseen combinations; we note that, unlike π<sub>0.5</sub>, BPP is trained from scratch without foundation-level pretraining.</p>
-      </details>
-
       <!-- Chain -->
-      <details class="subsection">
+      <details class="subsection" open>
         <summary><h3>LIBERO-Gen Chain</h3></summary>
         <p>In this benchmark we have one environment and explore the set of possible two-step interactions. First step actions include opening top/middle drawer, pushing the plate, turning on the stove, and pick-place actions. Second step actions include pick-place actions. We evaluate a model's instruction-following ability to complete sequential execution of two individually seen manipulation primitives never seen jointly.</p>
         <div class="libero-viewer" data-experiment="libero_chain" data-default-split="libero_goal_chain_selected_view">
@@ -1023,6 +1002,27 @@
         </div>
         <img src="media/figures/liberogen_chain_nosecondstep_results.svg" alt="LIBERO-Gen Chain (No Second Step) results" style="width:100%; max-width:400px; margin-top:1.5rem; display:block; margin-left:auto; margin-right:auto;">
         <p class="fig-caption"><b>LIBERO-Gen Chain (no second step) results.</b> As expected, adaptation performance generally decreases across methods since we have removed second-step tasks from training. We find that BPP outperforms baselines using goal images or language instructions. Finetuning the π<sub>0.5</sub> VLA model on the training chains outperform BPP on adaptation to unseen chains; we note that, unlike π<sub>0.5</sub>, BPP is trained from scratch without foundation-level pretraining.</p>
+      </details>
+
+      <!-- Combination -->
+      <details class="subsection">
+        <summary><h3>LIBERO-Gen Combination</h3></summary>
+        <p>In this benchmark we have one environment containing two identical bowls that are placed at varying initial locations in the scene. The policy is instructed to pick one of the two bowls and then place that bowl in an instructed target location. We train on many pick-place location combinations and evaluate on withheld pick-place combinations at test-time.</p>
+        <div class="libero-viewer" data-experiment="libero_combination" data-default-split="libero_spatial_selected_combinations_view">
+          <p style="font-size:0.8rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:1rem 0 -0.5rem; max-width:none;">Dataset split:</p>
+          <div class="trial-btns"></div>
+          <p class="split-label split-description"></p>
+          <div class="task-row">
+            <label>Task</label>
+            <select class="task-select"></select>
+          </div>
+          <div class="attention-row">
+            <h4>BPP Attention Map <span class="speed-tag">(not all rollouts are successful)</span></h4>
+            <video controls loop muted autoplay playsinline></video>
+          </div>
+        </div>
+        <img src="media/figures/liberogen_combination_results.svg" alt="LIBERO-Gen Combination results" style="width:100%; max-width:400px; margin-top:1.5rem; display:block; margin-left:auto; margin-right:auto;">
+        <p class="fig-caption"><b>LIBERO-Gen Combination results.</b> We find that BPP outperforms baselines using goal images or language instructions. Finetuning the π<sub>0.5</sub> VLA model on the training combinations outperform BPP on adaptation to unseen combinations; we note that, unlike π<sub>0.5</sub>, BPP is trained from scratch without foundation-level pretraining.</p>
       </details>
 
     </div>
@@ -1113,7 +1113,9 @@
   <section>
     <div class="container">
       <h2>iPhUMI</h2>
-      <p></p>
+      <p>We introduce iPhUMI, a handheld data collection interface that makes it easy to collect diverse, multi-task datasets. It features an intuitive data collection app, real-time localization across different environments, diverse data streams (6DoF pose, narrow and ultrawide RGB, LiDAR depth, bimanual), is easily extensible, and is entirely open-source. iPhUMI is also a <em>hardware interface for behavior prompting</em>, enabling wireless transfer of human demonstrations at test time to in-context condition prompting policies.</p>
+      <video src="media/iphumi/iphumi data.mp4" autoplay loop muted playsinline
+             style="width:100%; border-radius:var(--radius); margin-top:1rem; pointer-events:none;"></video>
     </div>
   </section>
 
