@@ -35,6 +35,7 @@
       --radius:      10px;
       --btn-height:  2rem;
       --title-vid-gap: 0.15rem;
+      --toc-w:       148px;
     }
 
     /* ── reset ────────────────────────────────────────────────── */
@@ -562,6 +563,77 @@
 
     .abstract-text { text-align: justify; }
 
+    /* ── table of contents ───────────────────────────────────── */
+    #toc {
+      display: none;
+    }
+
+    @media (min-width: 1180px) {
+      #toc {
+        display: flex;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: var(--toc-w);
+        height: 100vh;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.1rem;
+        padding-left: 1rem;
+        z-index: 100;
+      }
+
+      .drawreal-viewer,
+      .laundry-main-viewer {
+        width: calc(100vw - 2 * var(--toc-w));
+        max-width: calc(var(--max-w) * 1.5);
+      }
+    }
+
+    .toc-link {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 0.2rem 0.5rem;
+      border-left: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+
+    .toc-link:hover { color: var(--text); }
+
+    .toc-link.active {
+      color: var(--accent);
+      border-left-color: var(--accent);
+    }
+
+    .toc-sub {
+      display: none;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .toc-sub.visible { display: flex; }
+
+    .toc-sublink {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 0.15rem 0.5rem 0.15rem 1.1rem;
+      border-left: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+
+    .toc-sublink:hover { color: var(--text); }
+
+    .toc-sublink.active {
+      color: var(--accent);
+      border-left-color: var(--accent);
+    }
+
     @media (max-width: 600px) {
       .abstract-text { text-align: left; }
       .container {
@@ -846,7 +918,7 @@
   </section>
 
   <!-- ── ABSTRACT ──────────────────────────────────────────── -->
-  <section>
+  <section id="abstract">
     <div class="container">
       <h2>Abstract</h2>
       <p class="abstract-text">We study behavior prompting, a paradigm that enables robots to perform new tasks at inference time given a single human demonstration, which we call a behavior prompt. To enable this capability, we present contributions in algorithm, data, and evaluation. For algorithm, we introduce Behavior Prompting Policy (BPP), an in-context visuomotor architecture that translates the behavior prompt and the current observation into robot actions. For data, we identify that task diversity is the primary driver of the prompting capability and introduce iPhUMI, a handheld manipulation interface for collecting diverse training data. For evaluation, we introduce DrawAnything and LIBERO-Gen to evaluate test-time adaptation to unseen drawing and tabletop manipulation tasks. We also demonstrate that iPhUMI serves as a practical interface for specifying behavior prompts at test time, enabling a human to command a robot via a single demonstration to complete known tasks or to define new robot capabilities. Altogether, behavior prompting provides a flexible and scalable way for teaching robots new skills without fine-tuning.</p>
@@ -854,7 +926,7 @@
   </section>
 
   <!-- ── WHAT IS BEHAVIOR PROMPTING ───────────────────────────── -->
-  <section>
+  <section id="background">
     <div class="container">
       <h2>What is behavior prompting?</h2>
       <div class="defn">
@@ -873,7 +945,7 @@
   </section>
 
   <!-- ── LAUNDRY FOLDING ────────────────────────────────────── -->
-  <section>
+  <section id="laundry">
     <div class="container">
       <h2>Can we specify the task via demonstration?</h2>
       <p><em>Yes, we introduce a set of laundry folding tasks to validate this.</em></p>
@@ -906,13 +978,13 @@
 
   <!-- ── DRAWANYTHING-REAL ───────────────────────────────────── -->
   <!-- ── DRAWANYTHING ──────────────────────────────────────── -->
-  <section>
+  <section id="drawanything">
     <div class="container">
       <h2>Can we complete new tasks with just a single demo?</h2>
       <p><em>Yes, we introduce drawing and tabletop manipulation benchmarks to validate this. First we look at drawing.</em></p>      
       <!-- Real -->
       <div class="subsection no-top-rule">
-        <h3>DrawAnything Real</h3>
+        <h3 id="drawanything-real">DrawAnything Real</h3>
         <p>At test time, the robot must replicate a novel drawing given a single human demo. Drawing is well suited for studying behavior prompting as it requires the policy to continuously reference the prompt to adapt its low-level actions. <b>We find BPP succesfully recreates many drawings given a single iPhUMI demo.</b></p>
         
         <div class="single-viewer drawreal-viewer" data-base="media/results/drawanything_real/unseen_rollout/bpp" data-default-autoplay="true" data-prompt-pause="true">
@@ -959,7 +1031,7 @@
 
       <!-- Sim -->
       <div class="subsection">
-        <h3>DrawAnything Sim</h3>
+        <h3 id="drawanything-sim">DrawAnything Sim</h3>
         <p>This is one of simulation benchmarks we release to enable reproducible scientific study of behavior prompting. Here, the unseen drawings come from a human using a mouse. They are given to BPP as behavior prompts, but are shown below in red purely for reference; the red drawing is not visible to the policy. <b>We find that BPP succesfully recreates many new drawings while a goal image policy cannot.</b></p>
         
         
@@ -994,7 +1066,7 @@
   </section>
 
   <!-- ── LIBERO-GEN ─────────────────────────────────────────── -->
-  <section>
+  <section id="libero">
     <div class="container">
       <h2>What about completing new tabletop manipulation tasks?</h2>
       <p><em>We find that BPP can follow previously unseen instructions consisting of known manipulation primitives. We do not yet have evidence that BPP can enable one-shot execution of entire new action primitives.</em></p>
@@ -1009,7 +1081,7 @@
 
       <!-- Chain -->
       <div class="subsection">
-        <h3>LIBERO-Gen Chain</h3>
+        <h3 id="libero-chain">LIBERO-Gen Chain</h3>
         <p>In this benchmark, we have one environment and explore the set of possible two-step interactions. First step actions include opening top/middle drawer, pushing the plate, turning on the stove, and pick-place actions. Second step actions include pick-place actions. We evaluate a model's ability to sequentially execute two individually seen manipulation primitives that were never seen jointly.</p>
         <div class="libero-viewer" data-experiment="libero_chain" data-default-split="libero_goal_chain_selected_view">
           <p style="font-size:0.8rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:1rem 0 -0.5rem; max-width:none;">Dataset split:</p>
@@ -1053,7 +1125,7 @@
 
       <!-- Combination -->
       <div class="subsection">
-        <h3>LIBERO-Gen Combination</h3>
+        <h3 id="libero-combination">LIBERO-Gen Combination</h3>
         <p>In this benchmark, we have one environment containing two identical bowls that are placed at varying initial locations in the scene. The policy is instructed to pick one of the two bowls and then place that bowl in an instructed target location. We train on many pick-place location combinations and evaluate on withheld pick-place combinations at test-time.</p>
         <div class="libero-viewer" data-experiment="libero_combination" data-default-split="libero_spatial_selected_combinations_view">
           <p style="font-size:0.8rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:1rem 0 -0.5rem; max-width:none;">Dataset split:</p>
@@ -1078,7 +1150,7 @@
 
 
   <!-- ── iPhUMI ────────────────────────────────────────────── -->
-  <section>
+  <section id="iphumi">
     <div class="container">
       <h2>iPhUMI: a hardware interface data collection & behavior prompting</h2>
       <img src="media/iphumi/iphumi_teaser.png" alt="iPhUMI teaser" style="width:100%; border-radius:var(--radius); display:block;">
@@ -1090,7 +1162,7 @@
   </section>
 
   <!-- ── Q&A ────────────────────────────────────────────────── -->
-  <section>
+  <section id="qa">
     <div class="container">
       <h2>Q&amp;A</h2>
 
@@ -1122,14 +1194,14 @@
   </section>
 
   <!-- ── LIMITATIONS ──────────────────────────────────────────── -->
-  <section>
+  <section id="limitations">
     <div class="container">
       <details class="collapsible-section">
         <summary><h2>Limitations</h2></summary>
         <div class="subsection" style="padding-top:0; border-top:none; margin-top:1rem;">
-          <h3>Behavior prompting challenges with low task diversity</h3>
+          <h3>Behavior prompting faces challenges with low task diversity</h3>
           <p>
-            Behavior prompts are most useful when the spatial and temporal information in the prompt provide additional task-relevent cues to the policy. But in this experiment we only have three training tasks, all of which can be directly memorized and distinguished in the base model. Consequently, this extra information makes the behavior prompt a more indirect identifier of the desired folding task compared to a language command. We observe that this indirectness weakens the strength of the behavior prompt conditioning in low task diversity scenarios. Below, we highlight cases where BPP completes the wrong task or hesitates about what task to complete. We don't see these failure modes with language conditioning.</p>
+            Behavior prompts are most useful when the spatial and temporal information in the prompt provide additional task-relevent cues to the policy. But for our laundry folding experiment we only have three training tasks, the details of which can be directly memorized in the base model. Consequently, this extra information makes the behavior prompt a more indirect identifier of the desired folding task compared to a language command. <em>We observe that this indirectness weakens the strength of the behavior prompt task conditioning in low task diversity scenarios.</em> Below, we highlight cases where BPP completes the wrong task or hesitates about what task to do. We don't see these failure modes with language conditioning.</p>
           <div class="single-viewer laundry-viewer" data-base="media/results/laundry_folding/failures" data-default-autoplay="true" data-hide-controls="true">
             <p style="font-size:0.8rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:1rem 0 -0.5rem; max-width:none;">Failure cases:</p>
             <div class="trial-btns"></div>
@@ -1147,7 +1219,7 @@
   </section>
 
   <!-- ── TEAM ──────────────────────────────────────────────── -->
-  <section>
+  <section id="authors">
     <div class="container">
       <h2>Authors</h2>
       <div class="team-grid">
@@ -1175,7 +1247,7 @@
   </section>
 
   <!-- ── BIBTEX ─────────────────────────────────────────────── -->
-  <section>
+  <section id="citation">
     <div class="container">
       <h2>Citation</h2>
       <div class="bibtex-block">
@@ -1615,6 +1687,103 @@
           initTrialButtons(btnRow, trials);
         })
         .catch(() => console.warn(`No trials.json found for ${task}/${split}`));
+    });
+  </script>
+
+  <nav id="toc" aria-label="Table of contents">
+    <a href="#abstract"     class="toc-link">Abstract</a>
+    <a href="#background"   class="toc-link">Background</a>
+    <a href="#laundry"      class="toc-link">Laundry Folding</a>
+    <a href="#drawanything" class="toc-link">DrawAnything</a>
+    <div class="toc-sub" data-parent="drawanything">
+      <a href="#drawanything-real" class="toc-sublink">Real</a>
+      <a href="#drawanything-sim"  class="toc-sublink">Sim</a>
+    </div>
+    <a href="#libero"       class="toc-link">LIBERO-Gen</a>
+    <div class="toc-sub" data-parent="libero">
+      <a href="#libero-chain"       class="toc-sublink">Chain</a>
+      <a href="#libero-combination" class="toc-sublink">Combination</a>
+    </div>
+    <a href="#iphumi"       class="toc-link">iPhUMI</a>
+    <a href="#qa"           class="toc-link">Q&amp;A</a>
+    <a href="#limitations"  class="toc-link">Limitations</a>
+    <a href="#authors"      class="toc-link">Authors</a>
+    <a href="#citation"     class="toc-link">Citation</a>
+  </nav>
+
+  <script>
+    const tocLinks    = document.querySelectorAll('.toc-link');
+    const tocSections = [...tocLinks].map(a => document.querySelector(a.getAttribute('href')));
+    const tocSubs     = document.querySelectorAll('.toc-sub');
+    const tocSublinks = document.querySelectorAll('.toc-sublink');
+    const subSections = [...tocSublinks].map(a => document.querySelector(a.getAttribute('href')));
+
+    let manualActive = -1;
+    let manualTimeout = null;
+
+    function updateTocActive() {
+      if (manualActive >= 0) return;
+      const threshold = 120;
+
+      // Active parent section
+      let activeIdx = 0;
+      for (let i = 0; i < tocSections.length; i++) {
+        if (tocSections[i] && tocSections[i].getBoundingClientRect().top <= threshold) {
+          activeIdx = i;
+        }
+      }
+      const lastSection = tocSections[tocSections.length - 1];
+      const lastRect = lastSection ? lastSection.getBoundingClientRect() : null;
+      const atBottom = lastRect && lastRect.top < window.innerHeight &&
+                       window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 1;
+      if (atBottom) activeIdx = tocSections.length - 1;
+      tocLinks.forEach((l, i) => l.classList.toggle('active', i === activeIdx));
+
+      // Show/hide sub-groups
+      const activeParentId = tocSections[activeIdx]?.id;
+      tocSubs.forEach(sub => sub.classList.toggle('visible', sub.dataset.parent === activeParentId));
+
+      // Active sub-link
+      let activeSubIdx = -1;
+      for (let i = 0; i < subSections.length; i++) {
+        if (subSections[i] && subSections[i].getBoundingClientRect().top <= threshold) {
+          activeSubIdx = i;
+        }
+      }
+      tocSublinks.forEach((l, i) => l.classList.toggle('active', i === activeSubIdx));
+    }
+
+    window.addEventListener('scroll', updateTocActive, { passive: true });
+    updateTocActive();
+
+    tocLinks.forEach((a, linkIdx) => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const href = a.getAttribute('href');
+        manualActive = linkIdx;
+        document.querySelector(href)?.scrollIntoView({ behavior: 'instant' });
+        history.replaceState(null, '', href);
+        tocLinks.forEach((l, i) => l.classList.toggle('active', i === linkIdx));
+        // Show sub-group for clicked parent, hide others
+        const parentId = href.slice(1);
+        tocSubs.forEach(sub => sub.classList.toggle('visible', sub.dataset.parent === parentId));
+        tocSublinks.forEach(l => l.classList.remove('active'));
+        clearTimeout(manualTimeout);
+        manualTimeout = setTimeout(() => { manualActive = -1; }, 200);
+      });
+    });
+
+    tocSublinks.forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const href = a.getAttribute('href');
+        document.querySelector(href)?.scrollIntoView({ behavior: 'instant' });
+        history.replaceState(null, '', href);
+        tocSublinks.forEach(l => l.classList.remove('active'));
+        a.classList.add('active');
+        clearTimeout(manualTimeout);
+        manualTimeout = setTimeout(() => { manualActive = -1; }, 200);
+      });
     });
   </script>
 
