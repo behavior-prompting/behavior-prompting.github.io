@@ -667,6 +667,10 @@
       "label": "Unseen Combinations",
       "tasks": [
         {
+          "label": "pick up the black bowl on the plate and place it in the black bowl on the table center",
+          "file": "pick_up_the_black_bowl_on_the_plate_and_place_it_in_the_black_bowl_on_the_table_center"
+        },
+        {
           "label": "pick up the black bowl from table center and place it on the cookie box",
           "file": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_cookie_box"
         },
@@ -689,10 +693,6 @@
         {
           "label": "pick up the black bowl on the cookie box and place it on the wooden cabinet",
           "file": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_wooden_cabinet"
-        },
-        {
-          "label": "pick up the black bowl on the plate and place it in the black bowl on the table center",
-          "file": "pick_up_the_black_bowl_on_the_plate_and_place_it_in_the_black_bowl_on_the_table_center"
         },
         {
           "label": "pick up the black bowl on the plate and place it on the table center",

@@ -369,6 +369,8 @@
       border-top: 1px solid var(--border);
     }
 
+    .subsection.no-top-rule { border-top: none; padding-top: 0; margin-top: 1.5rem; }
+
     .subsection h3 {
       font-family: 'Source Serif 4', Georgia, serif;
       font-size: 1.2rem;
@@ -400,6 +402,31 @@
     details.subsection[open] > summary::after { transform: rotate(180deg); }
     details.subsection > summary:hover h3 { color: var(--accent); }
     details.subsection[open] > summary { margin-bottom: 0.75rem; }
+
+    details.collapsible-section > summary {
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      user-select: none;
+    }
+    details.collapsible-section > summary::-webkit-details-marker { display: none; }
+    details.collapsible-section > summary h2 { margin-bottom: 0; }
+    details.collapsible-section > summary::after {
+      content: '';
+      flex-shrink: 0;
+      width: 0.9rem;
+      height: 0.9rem;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2378716C' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+      transition: transform 0.2s;
+    }
+    details.collapsible-section[open] > summary::after { transform: rotate(180deg); }
+    details.collapsible-section > summary:hover h2 { color: var(--accent); }
+    details.collapsible-section[open] > summary { margin-bottom: 1.25rem; }
 
     .section-heading-row {
       display: flex;
@@ -779,15 +806,15 @@
     <div class="container">
       <div style="display:flex; justify-content:center; margin-bottom:1rem;">
         <div style="background:var(--surface-tint); border:1px solid var(--border); border-radius:var(--radius); padding:0.75rem 1.25rem; text-align:left;">
-          <strong style="color:var(--text);">TL;DR:</strong> <span style="color:var(--text);">Reuse your existing robot demonstrations as in-context prompts during training. Then you can prompt the in-context policy with a single demo at test time to complete known or even new tasks.</span>
+          <strong style="color:var(--text);">TL;DR:</strong> <span style="color:var(--text);">Reuse your existing robot demonstrations as in-context prompts during training. Then, at test time, you can prompt the in-context policy with a single demo to complete known or even new tasks.</span>
         </div>
       </div>
       <div class="teaser-viewer" style="display:flex; flex-direction:column; gap:6px;">
         <video src="media/teaser/laundry_teaser.mp4" autoplay muted loop playsinline
-               style="width:100%; height:auto; border-radius:var(--radius); border:1px solid var(--border); display:block;"></video>
+               style="width:100%; height:auto; border-radius:var(--radius); border:1px solid var(--border); display:block; pointer-events:none;"></video>
         <p style="text-align:center; font-size:0.9rem; margin:2px 0 4px; color:var(--text-muted);">A user prompts an in-context policy with an iPhUMI demo to specify the desired fold (seen during training).</p>
         <video src="media/teaser/drawing_teaser.mp4" autoplay muted loop playsinline
-               style="width:100%; height:auto; border-radius:var(--radius); border:1px solid var(--border); display:block;"></video>
+               style="width:100%; height:auto; border-radius:var(--radius); border:1px solid var(--border); display:block; pointer-events:none;"></video>
       </div>
       <p style="text-align:center; font-size:0.9rem; margin-top:0.5rem; color:var(--text-muted);">A user demonstrates a new drawing that the robot can then immediately execute (unseen during training).</p>
     </div>
@@ -810,23 +837,23 @@
         <p class="defn-body">A single demonstration of a desired task consisting of a sequence of observations, proprioception, and actions in the same sensorimotor space as the robot's execution. While language and goal images typically provide information about <strong><em>what</em></strong> task needs to be completed, behavior prompts additionally provide spatial and temporal information that inform the policy <strong><em>how</em></strong> to complete the task.</p>
       </div>
       <img src="media/figures/prompt.svg" alt="Behavior Prompt" style="width:100%; max-width:560px; margin:1.5rem auto 0; display:block; border:1px solid var(--border); border-radius:var(--radius); background:var(--surface); padding:1rem;">
-      <p class="fig-caption"><b>Behavior prompt from a human demo of drawing the letter A.</b> The observation and proprioception are temporally downsampled, but the actions are included at full temporal resolution. We pool the features at each time chunk into a single sensorimotor token. The key idea is that a behavior prompt is simply a task demonstration.</p>
+      <p class="fig-caption" style="max-width:560px; margin-left:auto; margin-right:auto;"><b>Behavior prompt from a human demo of drawing the letter A.</b> The key idea is that a behavior prompt is simply a robot demonstration. The observation and proprioception are temporally downsampled, but the actions are included at full temporal resolution. We pool the features at each time chunk.</p>
       <div class="defn">
         <div class="defn-term">behavior prompting</div><span class="defn-pos">v.</span>
         <p class="defn-body">Putting a behavior prompt in the context of a visuomotor policy to condition execution. The prompt comes from the training dataset for <em>known</em> tasks or from a single human demonstration collected at test time for <em>new</em> tasks. The prompt is the task descriptor used instead of language or goal images.</p>
       </div>
       <img src="media/figures/bpp.svg" alt="Behavior Prompting Policy" style="width:100%; max-width:560px; margin:1rem auto 0; display:block; border:1px solid var(--border); border-radius:var(--radius); background:var(--surface); padding:1rem;">
-      <p class="fig-caption"><b>Behavior Prompting Policy (BPP)</b>. BPP is an in-context visuomotor architecture that translates the behavior prompt and the current observation into closed-loop robot actions. It consists of a prompt encoder and action decoder.</p>
+      <p class="fig-caption" style="max-width:560px; margin-left:auto; margin-right:auto;"><b>Behavior Prompting Policy (BPP)</b>. BPP is an in-context visuomotor architecture that translates the behavior prompt and the current observation into closed-loop robot actions. It consists of a prompt encoder and an action decoder.</p>
     </div>
   </section>
 
   <!-- ── LAUNDRY FOLDING ────────────────────────────────────── -->
   <section>
     <div class="container">
-      <h2>Can we control robots via demonstration?</h2>
+      <h2>Can we specify the task via demonstration?</h2>
       <p><em>Yes, we introduce a set of laundry folding tasks to validate this.</em></p>
       <br>
-      <p>Here a human commands the robot at test time through a single sweater folding demonstration (i.e., behavior prompt) collected with bimanual iPhUMI. The robot is trained on three distinct folding tasks, and BPP determines which of the training behaviors to follow based on the prompt. <b>This experiment validates that we can command a robot via demonstration for complex manipulation tasks seen during training:</b></p>
+      <p>Here a human commands the robot at test time through a single sweater folding demonstration (i.e., behavior prompt) collected with bimanual iPhUMI. The robot is trained on these three distinct folding tasks, and <b>BPP successfully determines which training behavior to follow based on the behavior prompt.</b></p>
 
       <div class="single-viewer laundry-viewer laundry-main-viewer" data-base="media/results/laundry_folding/bpp" data-default-autoplay="true" data-prompt-pause="true" data-hide-controls="true">
         <p style="font-size:0.8rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:1rem 0 -0.5rem; max-width:none;">Training tasks:</p>
@@ -857,14 +884,11 @@
   <section>
     <div class="container">
       <h2>Can we complete new tasks with just a single demo?</h2>
-      <p><em>Yes, we introduce drawing and tabletop manipulation benchmarks to validate this. First we look at drawing.</em></p>
-      <br>
-      <p>In this free-form drawing task the robot must replicate a novel drawing given a single human demonstration. Drawing is well suited for studying behavior prompting as it requires the policy to continuously reference the prompt to adapt its low-level actions. Results are shown on drawings <strong><em>not seen during training</em></strong>.</p>
-
+      <p><em>Yes, we introduce drawing and tabletop manipulation benchmarks to validate this. First we look at drawing.</em></p>      
       <!-- Real -->
-      <div class="subsection">
+      <div class="subsection no-top-rule">
         <h3>DrawAnything Real</h3>
-        <p>At test time, BPP is provided with a single human demo for a <em>new</em> drawing collected using iPhUMI. The robot then replicates the drawing at a different drawing region pose. <b>We find that the policy can succesfully recreate many new drawings given just a single human demo:</b></p>
+        <p>At test time, the robot must replicate a novel drawing given a single human demo. Drawing is well suited for studying behavior prompting as it requires the policy to continuously reference the prompt to adapt its low-level actions. <b>We find BPP succesfully recreates many drawings given a single iPhUMI demo.</b></p>
         
         <div class="single-viewer drawreal-viewer" data-base="media/results/drawanything_real/unseen_rollout/bpp" data-default-autoplay="true" data-prompt-pause="true">
           <p style="font-size:0.8rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:1rem 0 -0.5rem; max-width:none;">Tasks not seen during training:</p>
@@ -885,10 +909,10 @@
               <video class="prompt-video" controls loop muted autoplay playsinline></video>
             </div>
           </div>
-          <p class="trial-caption" style="margin-top:0.5rem;"></p>
+          <p class="trial-caption" style="margin-top:0.5rem; margin-bottom:-0.75rem;"></p>
         </div>
 
-        <p style="margin-top:1.25rem;"><em>So how exactly does BPP leverage the prompt to adapt to new drawings?</em> To answer this, we visualize which parts of the prompt the policy focuses on during the rollout:</p>
+        <p style="margin-top:1.25rem;">To understand how BPP leverages the behavior prompt to adapt to new drawings, we visualize which parts of the prompt the policy focuses on during the rollout:</p>
 
         <div class="single-viewer attention-card">
           <p style="font-size:0.8rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:1rem 0 -0.5rem; max-width:none;">Tasks not seen during training:</p>
@@ -904,14 +928,14 @@
             <video src="media/results/drawanything_real/unseen_rollout/attention/star_attention.mp4"
                    controls loop muted autoplay playsinline style="aspect-ratio:auto; height:auto;"></video>
           </div>
-          <p class="trial-caption" style="margin-top:0.5rem;"><b>Prompt attention follows task progression.</b> The BPP prompt encoder is responsible for attending to relevant information from the human prompt (bottom) during policy rollout (top left). We visualize the attention scores for the prompt at each inference call (bottom) and across the rollout (top right). Rather than just looking the final goal state of the drawing, BPP learns how to follow step-by-step instructions throughout the behavior prompt. This is a form of dense subgoal conditioning that dramatically simplifies the adaptation problem.</p>
+          <p class="trial-caption" style="margin-top:0.5rem;"><b>Prompt attention follows task progression.</b> The BPP prompt encoder is responsible for attending to relevant information from the human prompt (bottom) during policy rollout (top left). We visualize the attention scores for the prompt at each inference call throughout the rollout (top right). Rather than just looking the final goal state of the drawing, BPP learns how to follow the behavior prompt as a step-by-step guide. This is a form of dense subgoal conditioning that dramatically simplifies the adaptation problem.</p>
         </div>
       </div>
 
       <!-- Sim -->
       <div class="subsection">
         <h3>DrawAnything Sim</h3>
-        <p>We release multiple simulation benchmarks to enable reproducible scientific study of behavior prompting without requiring industrial scale data collection. Drawing in simulation is one such benchmark. Here, the behavior prompt comes from a human using a mouse to draw a single demonstration of a previously unseen drawing. The red drawing is the ground truth displayed for reference; it is not visible to the policy. <b>We find that the policy can succesfully recreate many new drawings given just a single human demo:</b></p>
+        <p>This is one of simulation benchmarks we release to enable reproducible scientific study of behavior prompting. Here, the unseen drawings come from a human using a mouse. They are given to BPP as behavior prompts, but are shown below in red purely for reference; the red drawing is not visible to the policy. <b>We find that BPP succesfully recreates many new drawings while a goal image policy cannot.</b></p>
         
         
         <div class="sim-viewer">
@@ -923,14 +947,10 @@
                data-default-autoplay="true">
           </div>
 
-          <div class="model-grid">
+          <div class="model-grid" style="grid-template-columns: repeat(2, 1fr); max-width: 530px; margin: 0 auto;">
             <div class="model-col">
-              <h4>Goal Image</h4>
+              <h4>Goal Image Policy</h4>
               <video id="vid-drawanything_sim-goal_image" controls loop muted autoplay playsinline></video>
-            </div>
-            <div class="model-col">
-              <h4>ICRT</h4>
-              <video id="vid-drawanything_sim-icrt" controls loop muted autoplay playsinline></video>
             </div>
             <div class="model-col">
               <h4>BPP (Ours)</h4>
@@ -941,7 +961,7 @@
           <div class="attention-row">
             <h4>BPP Attention Map</h4>
             <video id="vid-drawanything_sim-bpp_attention" controls loop muted autoplay playsinline></video>
-            <p class="trial-caption" style="margin-top:0.5rem;"><b>Prompt attention follows task progression.</b> The BPP prompt encoder is responsible for attending to relevant information from the human prompt (bottom) during policy rollout (top). We visualize the attention scores for the prompt at each inference call (bottom). Rather than just looking the final goal state of the drawing, BPP learns how to follow step-by-step instructions throughout the behavior prompt. This is a form of dense subgoal conditioning that dramatically simplifies the adaptation problem.</p>
+            <p class="trial-caption" style="margin-top:0.5rem;"><b>Prompt attention follows task progression.</b> The BPP prompt encoder is responsible for attending to relevant information from the human prompt (bottom) during policy rollout (top). We visualize the attention scores for the prompt at each inference call (bottom). Compared to goal image policy which can only look at the final drawing state, BPP learns to follow the behavior prompt as a step-by-step guide. This is a form of dense subgoal conditioning that dramatically simplifies the adaptation problem.</p>
           </div>
         </div>
       </div>
@@ -952,20 +972,20 @@
   <section>
     <div class="container">
       <h2>What about completing new tabletop manipulation tasks?</h2>
-      <p><em>Yes, we find that BPP can follow previously unseen instructions consisting of known manipulation primitives. Though we do not yet have evidence that BPP can adapt to entirely new action primitives.</em></p>
+      <p><em>We find that BPP can follow previously unseen instructions consisting of known manipulation primitives. We do not yet have evidence that BPP can enable one-shot execution of entire new action primitives.</em></p>
       <br>
 
-      <p>We create LIBERO-Gen, an extension to LIBERO that procedurally generates new environments, tasks, and demonstration data. Using this tool, we create two benchmarks, LIBERO-Gen Chain and LIBERO-Gen Combination, to evaluate test-time adaptation to new tasks. By new tasks we mean unseen compositions of known manipulation primitives, rather than entirely new action primitives. <b>In other words, these benchmarks evaluate compositional instruction following.</b></p>
+      <p>To answer this question, we create LIBERO-Gen, an extension to LIBERO that procedurally generates new environments, tasks, and demonstration data. Using this tool, we create two benchmarks, LIBERO-Gen Chain and LIBERO-Gen Combination, to evaluate test-time adaptation to new tasks. By new tasks we do not mean entirely new action primitives. Rather, our LIBERO-Gen benchmarks evaluate compositional instruction following for tasks consisting of known manipulation primitives.</p>
 
       <br>
       <p>
-        <b>We find that BPP improves adaptation in both manipulation benchmarks compared to language conditioning or goal-image conditioning. We also achieve adaptation performance rivaling models with foundation level pretraining despite not having pretraining.</b> Expand the following sections for details.
+        <b>We find that BPP improves adaptation in both LIBERO-Gen benchmarks compared to language conditioning or goal-image conditioning. On these benchmarks, despite not having pretraining, BPP performs comparably to a VLA model with foundation pretraining.</b>
       <p>
 
       <!-- Chain -->
-      <details class="subsection" open>
-        <summary><h3>LIBERO-Gen Chain</h3></summary>
-        <p>In this benchmark we have one environment and explore the set of possible two-step interactions. First step actions include opening top/middle drawer, pushing the plate, turning on the stove, and pick-place actions. Second step actions include pick-place actions. We evaluate a model's instruction-following ability to complete sequential execution of two individually seen manipulation primitives never seen jointly.</p>
+      <div class="subsection">
+        <h3>LIBERO-Gen Chain</h3>
+        <p>In this benchmark, we have one environment and explore the set of possible two-step interactions. First step actions include opening top/middle drawer, pushing the plate, turning on the stove, and pick-place actions. Second step actions include pick-place actions. We evaluate a model's ability to sequentially execute two individually seen manipulation primitives that were never seen jointly.</p>
         <div class="libero-viewer" data-experiment="libero_chain" data-default-split="libero_goal_chain_selected_view">
           <p style="font-size:0.8rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:1rem 0 -0.5rem; max-width:none;">Dataset split:</p>
           <div class="trial-btns"></div>
@@ -977,16 +997,17 @@
           <div class="attention-row">
             <h4>BPP Attention Map <span class="speed-tag">(not all rollouts are successful)</span></h4>
             <video controls loop muted autoplay playsinline></video>
+            <p class="fig-caption" style="margin-top:0.5rem;"><b>Prompt attention follows key manipulation steps.</b> We see that the BPP prompt encoder typically attends to the most relevant upcoming state; this could include the next object to interact with, where to pick an object from, or where to place the currently held object.</p>
           </div>
         </div>
         <img src="media/figures/liberogen_chain_results.svg" alt="LIBERO-Gen Chain results" style="width:100%; max-width:400px; margin-top:1.5rem; display:block; margin-left:auto; margin-right:auto;">
-        <p class="fig-caption"><b>LIBERO-Gen Chain results.</b> We find that BPP outperforms baselines using goal images or language instructions. Desipte not having foundation-level pretraining, BPP outperforms the π<sub>0.5</sub> VLA model finetuned on the training chains.</p>
-      </details>
+        <p class="fig-caption"><b>LIBERO-Gen Chain results.</b> On unseen chained tasks, BPP outperforms baselines using goal images or language instructions. Desipte not having foundation-level pretraining, BPP outperforms a π<sub>0.5</sub> VLA model finetuned on the training chains.</p>
+      </div>
 
       <!-- Chain (No Second Step) -->
-      <details class="subsection">
-        <summary><h3>LIBERO-Gen Chain (No Second Step)</h3></summary>
-        <p>We perform an ablation on the training data composition by removing the second-step tasks from the training dataset. This means that when we evaluate on unseen chained tasks, the second step in that chain has not been seen during training. For example, if the unseen chained task is <em>"push the plate to the front of the stove and then put the bowl on the plate,"</em> then the policy will have never seen how to place the bowl on the plate with the plate in its post-push location. This increases the difficulty of completing the unseen tasks as it requires the model to 1) understand new two-step instructions (as before) and 2) complete a known manipulation primitive in an unseen environment state.</p>
+      <!-- <details class="subsection">
+        <summary><h3>LIBERO-Gen Chain (no second step)</h3></summary>
+        <p>We perform an ablation on the training data composition by removing the second-step tasks from the training dataset. This means that when we evaluate on unseen chained tasks, the second step in that chain has not been seen during training. For example, if the unseen chained task is <em>push the plate to the front of the stove and then put the bowl on the plate,</em> then the policy will have never seen how to place the bowl on the plate with the plate in its post-push location. This increases the difficulty of completing the unseen tasks as it requires the model to 1) understand new two-step instructions (as before) and 2) complete a known manipulation primitive in an unseen environment state.</p>
         <div class="libero-viewer" data-experiment="libero_chain_no_second_step" data-default-split="libero_goal_chain_selected_view">
           <p style="font-size:0.8rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:1rem 0 -0.5rem; max-width:none;">Dataset split:</p>
           <div class="trial-btns"></div>
@@ -998,16 +1019,17 @@
           <div class="attention-row">
             <h4>BPP Attention Map <span class="speed-tag">(not all rollouts are successful)</span></h4>
             <video controls loop muted autoplay playsinline></video>
+            <p class="fig-caption" style="margin-top:0.5rem;"><b>TODO.</b> TODO</p>
           </div>
         </div>
         <img src="media/figures/liberogen_chain_nosecondstep_results.svg" alt="LIBERO-Gen Chain (No Second Step) results" style="width:100%; max-width:400px; margin-top:1.5rem; display:block; margin-left:auto; margin-right:auto;">
         <p class="fig-caption"><b>LIBERO-Gen Chain (no second step) results.</b> As expected, adaptation performance generally decreases across methods since we have removed second-step tasks from training. We find that BPP outperforms baselines using goal images or language instructions. Finetuning the π<sub>0.5</sub> VLA model on the training chains outperform BPP on adaptation to unseen chains; we note that, unlike π<sub>0.5</sub>, BPP is trained from scratch without foundation-level pretraining.</p>
-      </details>
+      </details> -->
 
       <!-- Combination -->
-      <details class="subsection">
-        <summary><h3>LIBERO-Gen Combination</h3></summary>
-        <p>In this benchmark we have one environment containing two identical bowls that are placed at varying initial locations in the scene. The policy is instructed to pick one of the two bowls and then place that bowl in an instructed target location. We train on many pick-place location combinations and evaluate on withheld pick-place combinations at test-time.</p>
+      <div class="subsection">
+        <h3>LIBERO-Gen Combination</h3>
+        <p>In this benchmark, we have one environment containing two identical bowls that are placed at varying initial locations in the scene. The policy is instructed to pick one of the two bowls and then place that bowl in an instructed target location. We train on many pick-place location combinations and evaluate on withheld pick-place combinations at test-time.</p>
         <div class="libero-viewer" data-experiment="libero_combination" data-default-split="libero_spatial_selected_combinations_view">
           <p style="font-size:0.8rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:1rem 0 -0.5rem; max-width:none;">Dataset split:</p>
           <div class="trial-btns"></div>
@@ -1019,15 +1041,28 @@
           <div class="attention-row">
             <h4>BPP Attention Map <span class="speed-tag">(not all rollouts are successful)</span></h4>
             <video controls loop muted autoplay playsinline></video>
+            <p class="fig-caption" style="margin-top:0.5rem;"><b>Prompt attention follows key manipulation steps.</b> We see that the BPP prompt encoder typically attends to the most relevant upcoming state; in this case that includes first identifying which of the two identicial bowls to pick and then where to place it.</p>
           </div>
         </div>
         <img src="media/figures/liberogen_combination_results.svg" alt="LIBERO-Gen Combination results" style="width:100%; max-width:400px; margin-top:1.5rem; display:block; margin-left:auto; margin-right:auto;">
-        <p class="fig-caption"><b>LIBERO-Gen Combination results.</b> We find that BPP outperforms baselines using goal images or language instructions. Finetuning the π<sub>0.5</sub> VLA model on the training combinations outperform BPP on adaptation to unseen combinations; we note that, unlike π<sub>0.5</sub>, BPP is trained from scratch without foundation-level pretraining.</p>
-      </details>
+        <p class="fig-caption"><b>LIBERO-Gen Combination results.</b> On unseen pick-place combinations, BPP outperforms baselines using goal images or language instructions. Finetuning the π<sub>0.5</sub> VLA model on the training combinations outperforms BPP in this experiment; we note that, unlike π<sub>0.5</sub>, BPP is trained from scratch without foundation-level pretraining.</p>
+      </div>
 
     </div>
   </section>
 
+
+  <!-- ── iPhUMI ────────────────────────────────────────────── -->
+  <section>
+    <div class="container">
+      <h2>iPhUMI: a hardware interface data collection & behavior prompting</h2>
+      <img src="media/iphumi/iphumi_teaser.png" alt="iPhUMI teaser" style="width:100%; border-radius:var(--radius); display:block;">
+      <p style="margin-top:1rem;">We introduce iPhUMI, a handheld data collection interface that makes it easy to collect diverse, multi-task datasets. It features an intuitive data collection app, real-time localization across different environments, diverse data streams (6DoF pose, narrow and ultrawide RGB, LiDAR depth, bimanual), is easily extensible, and is entirely open-source.</p>
+      <video src="media/iphumi/iphumi data.mp4" autoplay loop muted playsinline
+             style="width:100%; border-radius:var(--radius); margin-top:1rem; pointer-events:none;"></video>
+      <p style="margin-top:0.5rem;">iPhUMI is also a <em>hardware interface for behavior prompting</em>, enabling wireless transfer of human demonstrations at test time to in-context condition prompting policies. During robot deployment, a user can quickly demonstrate a new task using iPhUMI that will immediately condition the robot execution.</p>
+    </div>
+  </section>
 
   <!-- ── Q&A ────────────────────────────────────────────────── -->
   <section>
@@ -1036,12 +1071,12 @@
 
       <div class="qa-item">
         <h3 class="qa-question">Are behavior prompts a replacement for language conditioning?</h3>
-        <p class="qa-answer">No. Both have their respective merits. Behavior prompts are rich in spatial and temporal information that help simplify the test-time adaptation problem, but they require a full demonstration for new tasks at test time and may contain unnecessary information. Language is easily expressed for many tasks (though hard for other tasks), but exists outside of the sensorimotor space of the robot. We envision a future policy that can flexibly leverage either type of task descriptor.</p>
+        <p class="qa-answer">No. Both have their respective merits. Behavior prompts are rich in spatial and temporal information that help simplify the test-time adaptation problem in particular domains, but they require a full demonstration for new tasks at test time. Language is easily expressed for many tasks (though hard for some tasks), but exists outside of the sensorimotor space of the robot. We envision a future policy that can flexibly leverage either type of task descriptor.</p>
       </div>
 
       <div class="qa-item">
         <h3 class="qa-question">When should I use behavior prompting?</h3>
-        <p class="qa-answer"><strong><em>Behavior prompting is useful in multi-task settings when a task demonstration clarifies task-relevant information.</em></strong> An example is when the task distribution involves following spatial-temporal information (ex: <em>step-by-step drawings</em>). It is also useful when the tasks are more easily described through example than language (ex: <em>a set of human preferences for loading a dishwasher or the desired way to fold a new piece of laundry</em>). It's also useful when a demonstration clarifies the manipulation strategy (ex: <em>a particular way to grasp a bottle that makes it easier to put on a shelf</em>). Even when goal image or language unambiguously define the set of tasks, our empirical results find that using behavior prompting can improve adaptation to new tasks given one demonstration. You should <em>not</em> use behavior prompting if you have a small number of training tasks that are sufficiently described by language (see limitations section below).</p>
+        <p class="qa-answer"><strong><em>Behavior prompting is useful in multi-task settings when a task demonstration clarifies task-relevant information.</em></strong> An example is when the task distribution involves following spatial-temporal information (ex: <em>step-by-step drawings</em>). It is also useful when the tasks are more easily described through example than language (ex: <em>the specific places to grasp a garment through multiple stages of a laundry folding task</em>). It's also useful when a demonstration clarifies the manipulation strategy (ex: <em>a particular way to grasp a bottle that makes it easier to put on a shelf</em>). Even when goal image or language unambiguously define a new task, our empirical results find that using behavior prompting can improve adaptation to new tasks given one demonstration. You should <em>not</em> use behavior prompting if you have a small number of training tasks that are sufficiently described by language (see limitations section below).</p>
       </div>
 
       <div class="qa-item">
@@ -1056,15 +1091,40 @@
 
       <div class="qa-item">
         <h3 class="qa-question">Why not use a more structured prompt representation?</h3>
-        <p class="qa-answer">The more inductive biases and priors you incorporate into your task representation, the less general it will be. Behavior prompts are quite general, meaning they can be broadly applied to many types of manipulation tasks. This comes at the cost of requiring high training task diversity; our bet is that the <a href="http://www.incompleteideas.net/IncIdeas/BitterLesson.html">bitter lesson</a> will favor a general prompt representation that scales with training data.</p>
+        <p class="qa-answer">The more inductive biases and priors you incorporate into your task representation, the less general it will be. Behavior prompts are quite general, meaning they can be broadly applied to many types of manipulation tasks. This generality does come at the cost of requiring high training task diversity; our bet is that the <a href="http://www.incompleteideas.net/IncIdeas/BitterLesson.html">bitter lesson</a> will favor a general prompt representation that scales with training data.</p>
       </div>
+    </div>
+  </section>
+
+  <!-- ── LIMITATIONS ──────────────────────────────────────────── -->
+  <section>
+    <div class="container">
+      <details class="collapsible-section">
+        <summary><h2>Limitations</h2></summary>
+        <div class="subsection" style="padding-top:0; border-top:none; margin-top:1rem;">
+          <h3>Behavior prompting challenges with low task diversity</h3>
+          <p>
+            Behavior prompts are most useful when the spatial and temporal information in the prompt provide additional task-relevent cues to the policy. But in this experiment we only have three training tasks, all of which can be directly memorized and distinguished in the base model. Consequently, this extra information makes the behavior prompt a more indirect identifier of the desired folding task compared to a language command. We observe that this indirectness weakens the strength of the behavior prompt conditioning in low task diversity scenarios. Below, we highlight cases where BPP completes the wrong task or hesitates about what task to complete. We don't see these failure modes with language conditioning.</p>
+          <div class="single-viewer laundry-viewer" data-base="media/results/laundry_folding/failures" data-default-autoplay="true" data-hide-controls="true">
+            <p style="font-size:0.8rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:1rem 0 -0.5rem; max-width:none;">Failure cases:</p>
+            <div class="trial-btns"></div>
+            <p class="trial-caption"></p>
+            <div class="video-header-row">
+              <h4 class="prompt-heading" style="margin:0">BPP Rollout</h4>
+              <span class="speed-tag">2× speed</span>
+            </div>
+            <video controls loop muted autoplay playsinline></video>
+          </div>
+          <p style="margin-top: 1rem;">We anticipate that behavior prompting would have substantial advantages over language conditioning if we trained on many folding strategies across many garmet types and then evaluated test-time adaptation to a new folding style or unseen garmet. In this case, a behavior prompt provides useful temporal cues about the folding steps and useful visual cues about interaction points on the new garmet. It's also more natural to describe these folding steps and spatial interaction points through a demonstration than with language.</p>
+        </div>
+      </details>
     </div>
   </section>
 
   <!-- ── TEAM ──────────────────────────────────────────────── -->
   <section>
     <div class="container">
-      <h2>Team</h2>
+      <h2>Authors</h2>
       <div class="team-grid">
         <div class="team-card">
           <img src="media/team/austin.jpg" alt="Austin Patel">
@@ -1092,7 +1152,7 @@
   <!-- ── BIBTEX ─────────────────────────────────────────────── -->
   <section>
     <div class="container">
-      <h2>BibTeX</h2>
+      <h2>Citation</h2>
       <div class="bibtex-block">
         <button class="bibtex-copy" onclick="
           navigator.clipboard.writeText(this.nextElementSibling.textContent);
@@ -1105,39 +1165,6 @@
   journal   = {arXiv preprint},
   year      = {2026}
 }</pre>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── iPhUMI ────────────────────────────────────────────── -->
-  <section>
-    <div class="container">
-      <h2>iPhUMI</h2>
-      <p>We introduce iPhUMI, a handheld data collection interface that makes it easy to collect diverse, multi-task datasets. It features an intuitive data collection app, real-time localization across different environments, diverse data streams (6DoF pose, narrow and ultrawide RGB, LiDAR depth, bimanual), is easily extensible, and is entirely open-source. iPhUMI is also a <em>hardware interface for behavior prompting</em>, enabling wireless transfer of human demonstrations at test time to in-context condition prompting policies.</p>
-      <video src="media/iphumi/iphumi data.mp4" autoplay loop muted playsinline
-             style="width:100%; border-radius:var(--radius); margin-top:1rem; pointer-events:none;"></video>
-    </div>
-  </section>
-
-  <!-- ── LIMITATIONS ──────────────────────────────────────────── -->
-  <section>
-    <div class="container">
-      <h2>Limitations</h2>
-      <div class="subsection" style="padding-top:0; border-top:none; margin-top:1rem;">
-        <h3>Behavior prompting challenges with low task diversity</h3>
-        <p>
-          Behavior prompts are most useful when the spatial and temporal information in the prompt provide additional task-relevent cues to the policy. But in this experiment we only have three training tasks, all of which can be directly memorized and distinguished in the base model. Consequently, this extra information makes the behavior prompt a more indirect identifier of the desired folding task compared to a language command. We observe that this indirectness weakens the strength of the behavior prompt conditioning in low task diversity scenarios. Below, we highlight cases where BPP completes the wrong task or hesitates about what task to complete. We don't see these failure modes with language conditioning.</p>
-        <div class="single-viewer laundry-viewer" data-base="media/results/laundry_folding/failures" data-default-autoplay="true" data-hide-controls="true">
-          <p style="font-size:0.8rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:1rem 0 -0.5rem; max-width:none;">Failure cases:</p>
-          <div class="trial-btns"></div>
-          <p class="trial-caption"></p>
-          <div class="video-header-row">
-            <h4 class="prompt-heading" style="margin:0">BPP Rollout</h4>
-            <span class="speed-tag">2× speed</span>
-          </div>
-          <video controls loop muted autoplay playsinline></video>
-        </div>
-        <p style="margin-top: 1rem;">We anticipate that behavior prompting would have substantial advantages over language conditioning if we trained on many folding strategies across many garmet types and then evaluated test-time adaptation to a new folding style or unseen garmet. In this case, a behavior prompt provides useful temporal cues about the folding steps and useful visual cues about interaction points on the new garmet. It's also more natural to describe these folding steps and spatial interaction points through a demonstration than with language.</p>
       </div>
     </div>
   </section>
@@ -1163,7 +1190,7 @@
       "libero_goal_chain_firststep_view":                  "Training first-step tasks — single manipulation primitives including open drawer, push plate, turn on stove, and pick-place.",
       "libero_goal_chain_secondstep_view":                 "Training second-step tasks — pick-place actions where the preceding first step has already been completed.",
       "libero_goal_chain_selected_inverse_view":           "Training chained tasks — two-step sequences seen during training used to build up chaining capability.",
-      "libero_goal_chain_selected_view":                   "Unseen chained tasks — two-step sequences composed of individually seen manipulation skills, <strong><em>never seen chained together</em></strong> during training.",
+      "libero_goal_chain_selected_view":                   "Unseen chained tasks — two-step sequences composed of individually seen manipulation primitives, <strong><em>never seen chained together</em></strong> during training.",
     };
 
     const MODELS = [
@@ -1374,18 +1401,31 @@
 
       let autoplayOn = false;
       let ended = new Set();
+      const offscreen = new Set();
+
+      // Only wait for videos that are currently visible; offscreen videos may
+      // never fire 'ended' because browsers suspend playback when not in view.
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) offscreen.delete(e.target);
+          else offscreen.add(e.target);
+        });
+      }, { threshold: 0.1 });
+      videos.forEach(v => observer.observe(v));
 
       function onEnded(e) {
         ended.add(e.target);
-        const active = videos.filter(v => v.src);
-        if (ended.size >= active.length) {
+        const active = videos.filter(v => v.src && !offscreen.has(v));
+        const waiting = active.filter(v => !ended.has(v));
+        if (waiting.length === 0) {
           ended.clear();
           if (autoplayOn) {
             const btns = [...btnRow.querySelectorAll('.trial-btn')];
             const idx = btns.findIndex(b => b.classList.contains('active'));
             btns[(idx + 1) % btns.length].click();
           } else {
-            active.forEach(v => v.play());
+            // Restart all (including offscreen) so they stay in sync
+            videos.filter(v => v.src).forEach(v => v.play());
           }
         }
       }
@@ -1475,7 +1515,7 @@
               btns.querySelectorAll('.trial-btn').forEach(b => b.classList.remove('active'));
               btn.classList.add('active');
               setVideoSrc(video, `${base}/${encodeURIComponent(trial.file)}.mp4`);
-              if (captionEl) captionEl.textContent = trial.caption ?? '';
+              if (captionEl) captionEl.textContent = trial.caption ?? (trial.success === true ? 'Successful execution' : '');
               updatePrompt(trial);
             });
             btns.appendChild(btn);

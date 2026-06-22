@@ -4,9 +4,9 @@
   {"label": "B",             "file": "B",              "success": true,  "prompt": "B"},
   {"label": "star",          "file": "star",           "success": true,  "prompt": "star"},
   {"label": "&",             "file": "ampersand",      "success": true,  "prompt": "ampersand"},
-  {"label": "A",             "file": "A_fail_1",       "success": false, "prompt": "A",        "caption": "Policy unexpectedly lifts pen after first stroke, causing the policy to skip past the downward diagonal stroke."},
-  {"label": "A",             "file": "A_fail_2",       "success": false, "prompt": "A",        "caption": "Sometimes pen up motions make the policy think the drawing is done, which causes the arm to retreat too early."},
   {"label": "stickman",      "file": "stickman_fail_1","success": false, "prompt": "stickman", "caption": "Prior policy mistakes can lead to OOD issues that cause compounding errors."},
-  {"label": "#",             "file": "hashtag_fail_1", "success": false, "prompt": "hashtag",  "caption": "Sometimes pen up motions make the policy think the drawing is done, which causes the arm to retreat too early."},
+  {"label": "A",             "file": "A_fail_1",       "success": false, "prompt": "A",        "caption": "The policy unexpectedly lifts the pen after first stroke, causing the policy to skip past the downward diagonal stroke."},
+  {"label": "A",             "file": "A_fail_2",       "success": false, "prompt": "A",        "caption": "Sometimes pen up motions make the policy think the drawing is done, which causes the arm to retreat too early."},
+  {"label": "#",             "file": "hashtag_fail_1", "success": false, "prompt": "hashtag",  "caption": "Another example of how sometimes pen up motions make the policy think the drawing is done, which causes the arm to retreat too early."},
   {"label": "#",             "file": "hashtag_fail_2", "success": false, "prompt": "hashtag",  "caption": "Policy fails to lift pen between strokes, causing the policy to fall OOD and start to draw incorrectly."}
 ]
