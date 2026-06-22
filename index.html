@@ -116,7 +116,6 @@
     p {
       color: var(--text-muted);
       max-width: none;
-      text-align: justify;
     }
 
 .video-header-row {
@@ -169,7 +168,6 @@
       font-size: 0.9rem;
       color: var(--text-muted);
       margin-top: 0.5rem;
-      text-align: justify;
     }
 
     #teaser-laundry::-webkit-media-controls,
@@ -212,6 +210,15 @@
     }
 
     .trial-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    .trial-btn.two-line {
+      white-space: normal;
+      height: auto;
+      padding: 0.4rem 0.85rem;
+      line-height: 1.4;
+      flex-direction: column;
+      align-items: flex-start;
+    }
 
     .trial-btn.active {
       border-color: var(--accent);
@@ -553,6 +560,25 @@
       .laundry-main-viewer .prompt-row          { flex: 8; min-width: 0; }
     }
 
+    .abstract-text { text-align: justify; }
+
+    @media (max-width: 600px) {
+      .abstract-text { text-align: left; }
+      .container {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+      }
+      .single-viewer,
+      .libero-viewer,
+      .sim-viewer {
+        margin-left: -0.75rem;
+        margin-right: -0.75rem;
+        border-left: none;
+        border-right: none;
+        border-radius: 0;
+      }
+    }
+
     /* ── dictionary definition ───────────────────────────────── */
     .defn {
       margin-top: 1.25rem;
@@ -580,7 +606,6 @@
     .defn-body {
       margin-top: 0.3rem;
       color: var(--text-muted);
-      text-align: justify;
     }
 
     /* ── q&a section ──────────────────────────────────────────── */
@@ -824,7 +849,7 @@
   <section>
     <div class="container">
       <h2>Abstract</h2>
-      <p>We study behavior prompting, a paradigm that enables robots to perform new tasks at inference time given a single human demonstration, which we call a behavior prompt. To enable this capability, we present contributions in algorithm, data, and evaluation. For algorithm, we introduce Behavior Prompting Policy (BPP), an in-context visuomotor architecture that translates the behavior prompt and the current observation into robot actions. For data, we identify that task diversity is the primary driver of the prompting capability and introduce iPhUMI, a handheld manipulation interface for collecting diverse training data. For evaluation, we introduce DrawAnything and LIBERO-Gen to evaluate test-time adaptation to unseen drawing and tabletop manipulation tasks. We also demonstrate that iPhUMI serves as a practical interface for specifying behavior prompts at test time, enabling a human to command a robot via a single demonstration to complete known tasks or to define new robot capabilities. Altogether, behavior prompting provides a flexible and scalable way for teaching robots new skills without fine-tuning.</p>
+      <p class="abstract-text">We study behavior prompting, a paradigm that enables robots to perform new tasks at inference time given a single human demonstration, which we call a behavior prompt. To enable this capability, we present contributions in algorithm, data, and evaluation. For algorithm, we introduce Behavior Prompting Policy (BPP), an in-context visuomotor architecture that translates the behavior prompt and the current observation into robot actions. For data, we identify that task diversity is the primary driver of the prompting capability and introduce iPhUMI, a handheld manipulation interface for collecting diverse training data. For evaluation, we introduce DrawAnything and LIBERO-Gen to evaluate test-time adaptation to unseen drawing and tabletop manipulation tasks. We also demonstrate that iPhUMI serves as a practical interface for specifying behavior prompts at test time, enabling a human to command a robot via a single demonstration to complete known tasks or to define new robot capabilities. Altogether, behavior prompting provides a flexible and scalable way for teaching robots new skills without fine-tuning.</p>
     </div>
   </section>
 
@@ -1507,10 +1532,16 @@
 
           trials.forEach(trial => {
             const btn = document.createElement('button');
+            const parts = trial.label.split(' · ');
             btn.className = 'trial-btn'
+              + (parts.length > 1 ? ' two-line' : '')
               + (trial.file === defaultEntry.file ? ' active' : '')
               + (trial.success === false ? ' failure' : trial.success === true ? ' success' : '');
-            btn.textContent = trial.label;
+            if (parts.length > 1) {
+              btn.innerHTML = `<span>${parts[0]}</span><span class="btn-line2">${parts.slice(1).join(' · ')}</span>`;
+            } else {
+              btn.textContent = trial.label;
+            }
             btn.addEventListener('click', () => {
               btns.querySelectorAll('.trial-btn').forEach(b => b.classList.remove('active'));
               btn.classList.add('active');
