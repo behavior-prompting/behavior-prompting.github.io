@@ -1,1 +1,1 @@
-# bpp-corl180.github.io
+# behavior-prompting.github.io
