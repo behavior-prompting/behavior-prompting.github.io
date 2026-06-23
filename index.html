@@ -994,7 +994,7 @@
       <!-- Real -->
       <div class="subsection no-top-rule">
         <h3 id="drawanything-real">DrawAnything Real</h3>
-        <p>At test time, the robot must replicate a novel drawing given a single human demo. Drawing is well suited for studying behavior prompting as it requires the policy to continuously reference the prompt to adapt its low-level actions. <b>We find BPP succesfully recreates many drawings given a single iPhUMI demo.</b></p>
+        <p>At test time, the robot must replicate a novel drawing given a single human demo. Drawing is well suited for studying behavior prompting as it requires the policy to continuously reference the prompt to adapt its low-level actions. <b>We find that BPP can  succesfully recreate many new drawings given a single iPhUMI demo.</b></p>
         
         <div class="single-viewer drawreal-viewer" data-base="media/results/drawanything_real/unseen_rollout/bpp" data-default-autoplay="true" data-prompt-pause="true">
           <p style="font-size:0.8rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:1rem 0 -0.5rem; max-width:none;">Tasks not seen during training:</p>
@@ -1071,6 +1071,8 @@
           </div>
         </div>
       </div>
+      <img src="media/figures/draw_sim.svg" alt="DrawAnything Sim results" style="width:100%; max-width:300px; margin-top:1.5rem; display:block; margin-left:auto; margin-right:auto;">
+      <p class="fig-caption" style="margin-left:auto; margin-right:auto;"><b>DrawAnything Sim results.</b> While a goal image policy and BPP can both do well on training tasks, only BPP is able to adapt to unseen tasks. A full behavior prompt provides substantially more information about the desired task, which simplifies the adaptation problem.</p>
     </div>
   </section>
 
@@ -1078,21 +1080,21 @@
   <section id="libero">
     <div class="container">
       <h2>What about completing new tabletop manipulation tasks?</h2>
-      <p><em>We find that BPP can follow previously unseen instructions consisting of known manipulation primitives. We do not yet have evidence that BPP can enable one-shot execution of entire new action primitives.</em></p>
+      <p><em>We find that BPP improves adaptation to new instructions consisting of known manipulation primitives. We do not yet have evidence that BPP can enable one-shot execution of entirely new action primitives.</em></p>
       <br>
 
-      <p>To answer this question, we create LIBERO-Gen, an extension to LIBERO that procedurally generates new environments, tasks, and demonstration data. Using this tool, we create two benchmarks, LIBERO-Gen Chain and LIBERO-Gen Combination, to evaluate test-time adaptation to new tasks. By new tasks we do not mean entirely new action primitives. Rather, our LIBERO-Gen benchmarks evaluate compositional instruction following for tasks consisting of known manipulation primitives.</p>
+      <p>To study this, we create LIBERO-Gen, an extension to LIBERO that procedurally generates new environments, tasks, and demonstration data. Using this tool, we create two benchmarks, LIBERO-Gen Combination and LIBERO-Gen Chain, to evaluate test-time adaptation to new tasks. By new tasks we do not mean entirely new action primitives. Rather, our LIBERO-Gen benchmarks evaluate compositional instruction following for tasks consisting of known manipulation primitives.</p>
 
       <br>
       <p>
         <b>We find that BPP improves adaptation in both LIBERO-Gen benchmarks compared to language conditioning or goal-image conditioning. On these benchmarks, despite not having pretraining, BPP performs comparably to a VLA model with foundation pretraining.</b>
       <p>
 
-      <!-- Chain -->
+      <!-- Combination -->
       <div class="subsection">
-        <h3 id="libero-chain">LIBERO-Gen Chain</h3>
-        <p>In this benchmark, we have one environment and explore the set of possible two-step interactions. First step actions include opening top/middle drawer, pushing the plate, turning on the stove, and pick-place actions. Second step actions include pick-place actions. We evaluate a model's ability to sequentially execute two individually seen manipulation primitives that were never seen jointly.</p>
-        <div class="libero-viewer" data-experiment="libero_chain" data-default-split="libero_goal_chain_selected_view">
+        <h3 id="libero-combination">LIBERO-Gen Combination</h3>
+        <p>In this benchmark, we have one environment containing two identical bowls that are placed at varying initial locations in the scene. The policy is instructed to pick one of the two bowls and then place that bowl in an instructed target location. We train on many pick-place location combinations and evaluate on withheld pick-place combinations at test-time.</p>
+        <div class="libero-viewer" data-experiment="libero_combination" data-default-split="libero_spatial_selected_combinations_view">
           <p style="font-size:0.8rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:1rem 0 -0.5rem; max-width:none;">Dataset split:</p>
           <div class="trial-btns"></div>
           <p class="split-label split-description"></p>
@@ -1103,11 +1105,11 @@
           <div class="attention-row">
             <h4>BPP Attention Map <span class="speed-tag">(not all rollouts are successful)</span></h4>
             <video controls loop muted autoplay playsinline></video>
-            <p class="fig-caption" style="margin-top:0.5rem;"><b>Prompt attention follows key manipulation steps.</b> We see that the BPP prompt encoder typically attends to the most relevant upcoming state; this could include the next object to interact with, where to pick an object from, or where to place the currently held object.</p>
+            <p class="fig-caption" style="margin-top:0.5rem;"><b>Prompt attention follows key manipulation steps.</b> We see that the BPP prompt encoder typically attends to the most relevant upcoming state; in this case that includes first identifying which of the two identicial bowls to pick and then where to place it.</p>
           </div>
         </div>
-        <img src="media/figures/liberogen_chain_results.svg" alt="LIBERO-Gen Chain results" style="width:100%; max-width:400px; margin-top:1.5rem; display:block; margin-left:auto; margin-right:auto;">
-        <p class="fig-caption"><b>LIBERO-Gen Chain results.</b> On unseen chained tasks, BPP outperforms baselines using goal images or language instructions. Desipte not having foundation-level pretraining, BPP outperforms a π<sub>0.5</sub> VLA model finetuned on the training chains.</p>
+        <img src="media/figures/liberogen_combination_results.svg" alt="LIBERO-Gen Combination results" style="width:100%; max-width:400px; margin-top:1.5rem; display:block; margin-left:auto; margin-right:auto;">
+        <p class="fig-caption"><b>LIBERO-Gen Combination results.</b> On unseen pick-place combinations, BPP outperforms baselines using goal images or language instructions. Finetuning the π<sub>0.5</sub> VLA model on the training combinations outperforms BPP in this experiment; we note that, unlike π<sub>0.5</sub>, BPP is trained from scratch without foundation-level pretraining.</p>
       </div>
 
       <!-- Chain (No Second Step) -->
@@ -1132,11 +1134,11 @@
         <p class="fig-caption"><b>LIBERO-Gen Chain (no second step) results.</b> As expected, adaptation performance generally decreases across methods since we have removed second-step tasks from training. We find that BPP outperforms baselines using goal images or language instructions. Finetuning the π<sub>0.5</sub> VLA model on the training chains outperform BPP on adaptation to unseen chains; we note that, unlike π<sub>0.5</sub>, BPP is trained from scratch without foundation-level pretraining.</p>
       </details> -->
 
-      <!-- Combination -->
+      <!-- Chain -->
       <div class="subsection">
-        <h3 id="libero-combination">LIBERO-Gen Combination</h3>
-        <p>In this benchmark, we have one environment containing two identical bowls that are placed at varying initial locations in the scene. The policy is instructed to pick one of the two bowls and then place that bowl in an instructed target location. We train on many pick-place location combinations and evaluate on withheld pick-place combinations at test-time.</p>
-        <div class="libero-viewer" data-experiment="libero_combination" data-default-split="libero_spatial_selected_combinations_view">
+        <h3 id="libero-chain">LIBERO-Gen Chain</h3>
+        <p>In this benchmark, we have one environment and explore the set of possible two-step interactions. First step actions include opening top/middle drawer, pushing the plate, turning on the stove, and pick-place actions. Second step actions include pick-place actions. We evaluate a model's ability to sequentially execute two individually seen manipulation primitives that were never seen jointly.</p>
+        <div class="libero-viewer" data-experiment="libero_chain" data-default-split="libero_goal_chain_selected_view">
           <p style="font-size:0.8rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:1rem 0 -0.5rem; max-width:none;">Dataset split:</p>
           <div class="trial-btns"></div>
           <p class="split-label split-description"></p>
@@ -1147,11 +1149,11 @@
           <div class="attention-row">
             <h4>BPP Attention Map <span class="speed-tag">(not all rollouts are successful)</span></h4>
             <video controls loop muted autoplay playsinline></video>
-            <p class="fig-caption" style="margin-top:0.5rem;"><b>Prompt attention follows key manipulation steps.</b> We see that the BPP prompt encoder typically attends to the most relevant upcoming state; in this case that includes first identifying which of the two identicial bowls to pick and then where to place it.</p>
+            <p class="fig-caption" style="margin-top:0.5rem;"><b>Prompt attention follows key manipulation steps.</b> We see that the BPP prompt encoder typically attends to the most relevant upcoming state; this could include the next object to interact with, where to pick an object from, or where to place the currently held object.</p>
           </div>
         </div>
-        <img src="media/figures/liberogen_combination_results.svg" alt="LIBERO-Gen Combination results" style="width:100%; max-width:400px; margin-top:1.5rem; display:block; margin-left:auto; margin-right:auto;">
-        <p class="fig-caption"><b>LIBERO-Gen Combination results.</b> On unseen pick-place combinations, BPP outperforms baselines using goal images or language instructions. Finetuning the π<sub>0.5</sub> VLA model on the training combinations outperforms BPP in this experiment; we note that, unlike π<sub>0.5</sub>, BPP is trained from scratch without foundation-level pretraining.</p>
+        <img src="media/figures/liberogen_chain_results.svg" alt="LIBERO-Gen Chain results" style="width:100%; max-width:400px; margin-top:1.5rem; display:block; margin-left:auto; margin-right:auto;">
+        <p class="fig-caption"><b>LIBERO-Gen Chain results.</b> On unseen chained tasks, BPP outperforms baselines using goal images or language instructions. Desipte not having foundation-level pretraining, BPP outperforms a π<sub>0.5</sub> VLA model finetuned on the training chains.</p>
       </div>
 
     </div>
@@ -1198,6 +1200,11 @@
       <div class="qa-item">
         <h3 class="qa-question">Why not use a more structured prompt representation?</h3>
         <p class="qa-answer">The more inductive biases and priors you incorporate into your task representation, the less general it will be. Behavior prompts are quite general, meaning they can be broadly applied to many types of manipulation tasks. This generality does come at the cost of requiring high training task diversity; our bet is that the <a href="http://www.incompleteideas.net/IncIdeas/BitterLesson.html">bitter lesson</a> will favor a general prompt representation that scales with training data.</p>
+      </div>
+
+      <div class="qa-item">
+        <h3 class="qa-question">What's the long term vision?</h3>
+        <p class="qa-answer">We hope that behavior prompting broadly enables a pathway for specifying <em>human preferences</em> to robots at test time via demonstration. We also envision behavior prompting as a means to adapt pretraining knowledge (i.e., large foundation behavior prompting model) to a new environment (e.g., a person's home) through a single demonstration for a target task; a demonstration provides rich information about the target environment and desired manipulation strategy that <em>simplifies</em> the adaptation problem.</p>
       </div>
     </div>
   </section>
@@ -1249,7 +1256,7 @@
           <span class="team-name"><a href="https://shurans.github.io/">Shuran Song</a><sup>1</sup></span>
         </div>
       </div>
-      <p class="team-affiliations">
+      <p class="team-affiliations" style="margin-top:0.25rem;">
         <sup>1</sup>Stanford University &nbsp;&nbsp; <sup>2</sup>University of California, Berkeley
       </p>
     </div>
@@ -1710,8 +1717,8 @@
     </div>
     <a href="#libero"       class="toc-link">LIBERO-Gen</a>
     <div class="toc-sub" data-parent="libero">
-      <a href="#libero-chain"       class="toc-sublink">Chain</a>
       <a href="#libero-combination" class="toc-sublink">Combination</a>
+      <a href="#libero-chain"       class="toc-sublink">Chain</a>
     </div>
     <a href="#iphumi"       class="toc-link">iPhUMI</a>
     <a href="#qa"           class="toc-link">Q&amp;A</a>
