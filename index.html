@@ -710,6 +710,8 @@
       color: var(--text);
     }
 
+    .container a { color: var(--text-muted); }
+    .container a:hover { color: var(--accent); }
     .qa-answer a { color: var(--text-muted); }
     .qa-answer a:hover { color: var(--accent); }
 
@@ -1153,7 +1155,7 @@
           </div>
         </div>
         <img src="media/figures/liberogen_chain_results.svg" alt="LIBERO-Gen Chain results" style="width:100%; max-width:400px; margin-top:1.5rem; display:block; margin-left:auto; margin-right:auto;">
-        <p class="fig-caption"><b>LIBERO-Gen Chain results.</b> On unseen chained tasks, BPP outperforms baselines using goal images or language instructions. Desipte not having foundation-level pretraining, BPP outperforms a π<sub>0.5</sub> VLA model finetuned on the training chains.</p>
+        <p class="fig-caption"><b>LIBERO-Gen Chain results.</b> On unseen chained tasks, BPP outperforms baselines using goal images or language instructions. For this experiment, desipte not having foundation-level pretraining, BPP outperforms a π<sub>0.5</sub> VLA model finetuned on the training chains.</p>
       </div>
 
     </div>
@@ -1165,7 +1167,7 @@
     <div class="container">
       <h2>iPhUMI: hardware interface for data collection & behavior prompting</h2>
       <img src="media/iphumi/iphumi_teaser.png" alt="iPhUMI teaser" style="width:100%; border-radius:var(--radius); display:block;">
-      <p style="margin-top:1rem;">We introduce iPhUMI, a handheld data collection interface that makes it easy to collect diverse, multi-task datasets. It features an intuitive data collection app, real-time localization across different environments, diverse data streams (6DoF pose, narrow and ultrawide RGB, LiDAR depth, bimanual), is easily extensible, and is entirely open-source.</p>
+      <p style="margin-top:1rem;">We introduce iPhUMI, a handheld data collection interface that extends the <a href="https://umi-gripper.github.io/">original UMI</a>, to make it eaiser to collect diverse, multi-task datasets. It features an intuitive data collection app, real-time localization across different environments, diverse data streams (6DoF pose, narrow and ultrawide RGB, LiDAR depth, bimanual), is easily extensible, and is entirely open-source.</p>
       <video src="media/iphumi/iphumi data.mp4" autoplay loop muted playsinline
              style="width:100%; border-radius:var(--radius); margin-top:1rem; pointer-events:none;"></video>
       <p style="margin-top:0.5rem;">iPhUMI is also a <em>hardware interface for behavior prompting</em>, enabling wireless transfer of human demonstrations at test time to in-context condition prompting policies. During robot deployment, a user can quickly demonstrate a new task using iPhUMI that will immediately condition the robot execution.</p>
