@@ -128,7 +128,45 @@
       max-width: none;
     }
 
-.video-header-row {
+.teaser-video-wrap {
+      position: relative;
+      display: block;
+      line-height: 0;
+      container-type: inline-size;
+    }
+
+    .teaser-video-wrap::after {
+      content: "";
+      position: absolute;
+      left: 1px;
+      right: 1px;
+      bottom: 1px;
+      height: 64px;
+      background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+      border-bottom-left-radius: var(--radius);
+      border-bottom-right-radius: var(--radius);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .teaser-video-label {
+      position: absolute;
+      bottom: 16px;
+      width: 50%;
+      text-align: center;
+      font-size: clamp(0.6rem, 3.9cqw, 1.05rem);
+      font-weight: 600;
+      white-space: nowrap;
+      color: #fff;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .teaser-video-label.left  { left: 0; }
+    .teaser-video-label.right { right: 0; }
+
+    .video-header-row {
       display: flex;
       align-items: baseline;
       justify-content: center;
@@ -918,13 +956,21 @@
         </div>
       </div>
       <div class="teaser-viewer" style="display:flex; flex-direction:column; gap:6px;">
-        <video src="media/teaser/laundry_teaser.mp4" autoplay muted loop playsinline
-               style="width:100%; height:auto; border-radius:var(--radius); border:1px solid var(--border); display:block; pointer-events:none;"></video>
-        <p style="text-align:center; font-size:0.9rem; margin:2px 0 4px; color:var(--text-muted);">A user prompts an in-context policy with an iPhUMI demo to specify the desired fold (seen during training).</p>
-        <video src="media/teaser/drawing_teaser.mp4" autoplay muted loop playsinline
-               style="width:100%; height:auto; border-radius:var(--radius); border:1px solid var(--border); display:block; pointer-events:none;"></video>
+        <div class="teaser-video-wrap">
+          <video src="media/teaser/laundry_teaser.mp4" autoplay muted loop playsinline
+                 style="width:100%; height:auto; border-radius:var(--radius); border:1px solid var(--border); display:block; pointer-events:none;"></video>
+          <span class="teaser-video-label left">In-context human demo</span>
+          <span class="teaser-video-label right">Corresponding execution</span>
+        </div>
+        <p style="text-align:center; font-size:0.9rem; margin:2px 0 4px; color:var(--text-muted);">Control your robot via demonstration (task seen during training)</p>
+        <div class="teaser-video-wrap">
+          <video src="media/teaser/drawing_teaser.mp4" autoplay muted loop playsinline
+                 style="width:100%; height:auto; border-radius:var(--radius); border:1px solid var(--border); display:block; pointer-events:none;"></video>
+          <span class="teaser-video-label left">In-context human demo</span>
+          <span class="teaser-video-label right">Corresponding execution</span>
+        </div>
       </div>
-      <p style="text-align:center; font-size:0.9rem; margin-top:0.5rem; color:var(--text-muted);">A user demonstrates a new drawing that the robot can then immediately execute (unseen during training).</p>
+      <p style="text-align:center; font-size:0.9rem; margin-top:0.5rem; color:var(--text-muted);">Immediately execute new tasks with a single demo (task unseen during training)</p>
     </div>
   </section>
 
@@ -996,7 +1042,7 @@
       <!-- Real -->
       <div class="subsection no-top-rule">
         <h3 id="drawanything-real">DrawAnything Real</h3>
-        <p>At test time, the robot must replicate a novel drawing given a single human demo. Drawing is well suited for studying behavior prompting as it requires the policy to continuously reference the prompt to adapt its low-level actions. <b>We find that BPP can  succesfully recreate many new drawings given a single iPhUMI demo.</b></p>
+        <p>At test time, the robot must replicate a novel drawing given a single human demo. Drawing is well suited for studying behavior prompting as it requires the policy to continuously reference the prompt to adapt its low-level actions. <b>We find that BPP can succesfully recreate many new drawings given a single iPhUMI demo.</b></p>
         
         <div class="single-viewer drawreal-viewer" data-base="media/results/drawanything_real/unseen_rollout/bpp" data-default-autoplay="true" data-prompt-pause="true">
           <p style="font-size:0.8rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:1rem 0 -0.5rem; max-width:none;">Tasks not seen during training:</p>
@@ -1086,11 +1132,6 @@
       <br>
 
       <p>To study this, we create LIBERO-Gen, an extension to LIBERO that procedurally generates new environments, tasks, and demonstration data. Using this tool, we create two benchmarks, LIBERO-Gen Combination and LIBERO-Gen Chain, to evaluate test-time adaptation to new tasks. By new tasks we do not mean entirely new action primitives. Rather, our LIBERO-Gen benchmarks evaluate compositional instruction following for tasks consisting of known manipulation primitives.</p>
-
-      <br>
-      <p>
-        <b>We find that BPP improves adaptation in both LIBERO-Gen benchmarks compared to language conditioning or goal-image conditioning. On these benchmarks, despite not having pretraining, BPP performs comparably to a VLA model with foundation pretraining.</b>
-      <p>
 
       <!-- Combination -->
       <div class="subsection">
