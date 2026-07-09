@@ -1137,7 +1137,7 @@
       <div class="subsection">
         <h3 id="libero-combination">LIBERO-Gen Combination</h3>
         <p>In this benchmark, we have one environment containing two identical bowls that are placed at varying initial locations in the scene. The policy is instructed to pick one of the two bowls and then place that bowl in an instructed target location. We train on many pick-place location combinations and evaluate on withheld pick-place combinations at test-time.</p>
-        <div class="libero-viewer" data-experiment="libero_combination" data-default-split="libero_spatial_selected_combinations_view">
+        <div class="libero-viewer" data-experiment="libero_combination" data-default-split="libero_spatial_selected_combinations_view" data-hide-controls="true">
           <p style="font-size:0.8rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:1rem 0 -0.5rem; max-width:none;">Dataset split:</p>
           <div class="trial-btns"></div>
           <p class="split-label split-description"></p>
@@ -1159,7 +1159,7 @@
       <!-- <details class="subsection">
         <summary><h3>LIBERO-Gen Chain (no second step)</h3></summary>
         <p>We perform an ablation on the training data composition by removing the second-step tasks from the training dataset. This means that when we evaluate on unseen chained tasks, the second step in that chain has not been seen during training. For example, if the unseen chained task is <em>push the plate to the front of the stove and then put the bowl on the plate,</em> then the policy will have never seen how to place the bowl on the plate with the plate in its post-push location. This increases the difficulty of completing the unseen tasks as it requires the model to 1) understand new two-step instructions (as before) and 2) complete a known manipulation primitive in an unseen environment state.</p>
-        <div class="libero-viewer" data-experiment="libero_chain_no_second_step" data-default-split="libero_goal_chain_selected_view">
+        <div class="libero-viewer" data-experiment="libero_chain_no_second_step" data-default-split="libero_goal_chain_selected_view" data-hide-controls="true">
           <p style="font-size:0.8rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:1rem 0 -0.5rem; max-width:none;">Dataset split:</p>
           <div class="trial-btns"></div>
           <p class="split-label split-description"></p>
@@ -1181,7 +1181,7 @@
       <div class="subsection">
         <h3 id="libero-chain">LIBERO-Gen Chain</h3>
         <p>In this benchmark, we have one environment and explore the set of possible two-step interactions. First step actions include opening top/middle drawer, pushing the plate, turning on the stove, and pick-place actions. Second step actions include pick-place actions. We evaluate a model's ability to sequentially execute two individually seen manipulation primitives that were never seen jointly.</p>
-        <div class="libero-viewer" data-experiment="libero_chain" data-default-split="libero_goal_chain_selected_view">
+        <div class="libero-viewer" data-experiment="libero_chain" data-default-split="libero_goal_chain_selected_view" data-hide-controls="true">
           <p style="font-size:0.8rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:1rem 0 -0.5rem; max-width:none;">Dataset split:</p>
           <div class="trial-btns"></div>
           <p class="split-label split-description"></p>
